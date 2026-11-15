@@ -1,0 +1,31 @@
+# Java / Maven
+/target/
+**/target/
+*.class
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# Entorno y credenciales
+.env
+.env.*
+!.env.example
+application-secrets.yml
+**/application-secrets.yml
+*.jks
+*.p12
+*.pem
+
+# Archivos temporales / SO
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Volumenes de BD
+mongo-data/

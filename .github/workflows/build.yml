@@ -1,0 +1,19 @@
+name: Validar compilacion y pruebas unitarias
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Ejecutar pruebas unitarias
+        run: mvn -B test
+      - name: Empaquetar codigo
+        run: mvn -B -DskipTests package
+# Los tests de integración Oracle/Mongo deberán correr en un job con BDs de prueba.

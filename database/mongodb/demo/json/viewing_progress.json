@@ -1,0 +1,195 @@
+[
+  {
+    "_id": {
+      "$oid": "660000000000000000000001"
+    },
+    "profileId": {
+      "$numberLong": "15"
+    },
+    "contentId": "CNT-002",
+    "unitKey": "EP-002-01",
+    "lastPositionSeconds": {
+      "$numberInt": "1200"
+    },
+    "durationSeconds": {
+      "$numberInt": "2400"
+    },
+    "completed": false,
+    "lastActivityAt": {
+      "$date": "2026-11-02T15:20:00.000Z"
+    },
+    "lastSessionId": "SES-001",
+    "episodeId": "EP-002-01"
+  },
+  {
+    "_id": {
+      "$oid": "660000000000000000000002"
+    },
+    "profileId": {
+      "$numberLong": "15"
+    },
+    "contentId": "CNT-001",
+    "unitKey": "CNT-001",
+    "lastPositionSeconds": {
+      "$numberInt": "5000"
+    },
+    "durationSeconds": {
+      "$numberInt": "5820"
+    },
+    "completed": false,
+    "lastActivityAt": {
+      "$date": "2026-11-09T19:25:00.000Z"
+    },
+    "lastSessionId": "SES-007"
+  },
+  {
+    "_id": {
+      "$oid": "660000000000000000000003"
+    },
+    "profileId": {
+      "$numberLong": "16"
+    },
+    "contentId": "CNT-003",
+    "unitKey": "CNT-003",
+    "lastPositionSeconds": {
+      "$numberInt": "3000"
+    },
+    "durationSeconds": {
+      "$numberInt": "3300"
+    },
+    "completed": true,
+    "lastActivityAt": {
+      "$date": "2026-11-04T11:50:00.000Z"
+    },
+    "lastSessionId": "SES-003"
+  },
+  {
+    "_id": {
+      "$oid": "660000000000000000000004"
+    },
+    "profileId": {
+      "$numberLong": "15"
+    },
+    "contentId": "CNT-005",
+    "unitKey": "CNT-005",
+    "lastPositionSeconds": {
+      "$numberInt": "1200"
+    },
+    "durationSeconds": {
+      "$numberInt": "5400"
+    },
+    "completed": false,
+    "lastActivityAt": {
+      "$date": "2026-11-04T17:25:00.000Z"
+    },
+    "lastSessionId": "SES-004"
+  },
+  {
+    "_id": {
+      "$oid": "660000000000000000000005"
+    },
+    "profileId": {
+      "$numberLong": "21"
+    },
+    "contentId": "CNT-004",
+    "unitKey": "CNT-004",
+    "lastPositionSeconds": {
+      "$numberInt": "6500"
+    },
+    "durationSeconds": {
+      "$numberInt": "7200"
+    },
+    "completed": true,
+    "lastActivityAt": {
+      "$date": "2026-11-05T21:00:00.000Z"
+    },
+    "lastSessionId": "SES-005"
+  },
+  {
+    "_id": {
+      "$oid": "660000000000000000000006"
+    },
+    "profileId": {
+      "$numberLong": "15"
+    },
+    "contentId": "CNT-002",
+    "unitKey": "EP-002-02",
+    "lastPositionSeconds": {
+      "$numberInt": "2450"
+    },
+    "durationSeconds": {
+      "$numberInt": "2520"
+    },
+    "completed": true,
+    "lastActivityAt": {
+      "$date": "2026-11-08T15:45:00.000Z"
+    },
+    "lastSessionId": "SES-006",
+    "episodeId": "EP-002-02"
+  },
+  {
+    "_id": {
+      "$oid": "660000000000000000000007"
+    },
+    "profileId": {
+      "$numberLong": "15"
+    },
+    "contentId": "CNT-002",
+    "unitKey": "EP-002-03",
+    "lastPositionSeconds": {
+      "$numberInt": "1000"
+    },
+    "durationSeconds": {
+      "$numberInt": "2280"
+    },
+    "completed": false,
+    "lastActivityAt": {
+      "$date": "2026-11-10T14:20:00.000Z"
+    },
+    "lastSessionId": "SES-008",
+    "episodeId": "EP-002-03"
+  },
+  {
+    "_id": {
+      "$oid": "660000000000000000000008"
+    },
+    "profileId": {
+      "$numberLong": "21"
+    },
+    "contentId": "CNT-007",
+    "unitKey": "CNT-007",
+    "lastPositionSeconds": {
+      "$numberInt": "600"
+    },
+    "durationSeconds": {
+      "$numberInt": "3600"
+    },
+    "completed": false,
+    "lastActivityAt": {
+      "$date": "2026-11-11T10:15:00.000Z"
+    },
+    "lastSessionId": "SES-009"
+  },
+  {
+    "_id": {
+      "$oid": "660000000000000000000009"
+    },
+    "profileId": {
+      "$numberLong": "21"
+    },
+    "contentId": "CNT-008",
+    "unitKey": "EP-008-01",
+    "lastPositionSeconds": {
+      "$numberInt": "1000"
+    },
+    "durationSeconds": {
+      "$numberInt": "2640"
+    },
+    "completed": false,
+    "lastActivityAt": {
+      "$date": "2026-11-12T11:20:00.000Z"
+    },
+    "lastSessionId": "SES-010",
+    "episodeId": "EP-008-01"
+  }
+]

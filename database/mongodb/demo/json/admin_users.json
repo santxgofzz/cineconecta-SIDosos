@@ -1,0 +1,14 @@
+[
+  {
+    "_id": {
+      "$oid": "670000000000000000000001"
+    },
+    "usernameNormalized": "admin.demo",
+    "passwordHash": "NO_ES_UN_HASH_REAL_NO_USAR_EN_LOGIN_DEMO_2026",
+    "role": "ADMIN",
+    "active": false,
+    "createdAt": {
+      "$date": "2026-11-01T09:00:00.000Z"
+    }
+  }
+]

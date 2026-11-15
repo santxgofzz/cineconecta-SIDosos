@@ -1,0 +1,17 @@
+# MongoDB de desarrollo local. Oracle se configura con el servidor del equipo/curso.
+services:
+  mongodb:
+    image: mongo:8.0
+    container_name: cineconecta-mongodb
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - cineconecta_mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+volumes:
+  cineconecta_mongo_data:

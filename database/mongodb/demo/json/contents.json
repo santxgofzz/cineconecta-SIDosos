@@ -1,0 +1,399 @@
+[
+  {
+    "_id": "CNT-001",
+    "type": "movie",
+    "title": "La ruta del viento",
+    "synopsis": "Una familia recorre distintas regiones del país.",
+    "releaseYear": {
+      "$numberInt": "2022"
+    },
+    "genres": [
+      "Drama"
+    ],
+    "countries": [
+      "Colombia"
+    ],
+    "audioLanguages": [
+      "es"
+    ],
+    "subtitleLanguages": [
+      "en"
+    ],
+    "ageRating": {
+      "$numberInt": "12"
+    },
+    "coverUrl": "https://example.org/covers/cnt-001.jpg",
+    "status": "published",
+    "createdAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "durationSeconds": {
+      "$numberInt": "5820"
+    },
+    "director": "Ana Torres",
+    "cast": [
+      {
+        "actorName": "Luis Pérez",
+        "characterName": "Daniel"
+      },
+      {
+        "actorName": "Paula Reyes",
+        "characterName": "Elena"
+      }
+    ]
+  },
+  {
+    "_id": "CNT-002",
+    "type": "series",
+    "title": "Caminos del mar",
+    "synopsis": "Historias de una comunidad costera.",
+    "releaseYear": {
+      "$numberInt": "2023"
+    },
+    "genres": [
+      "Aventura"
+    ],
+    "countries": [
+      "Colombia"
+    ],
+    "audioLanguages": [
+      "es"
+    ],
+    "subtitleLanguages": [],
+    "ageRating": {
+      "$numberInt": "7"
+    },
+    "coverUrl": "https://example.org/covers/cnt-002.jpg",
+    "status": "published",
+    "createdAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "seasons": [
+      {
+        "number": {
+          "$numberInt": "1"
+        },
+        "description": "El comienzo",
+        "episodes": [
+          {
+            "id": "EP-002-01",
+            "number": {
+              "$numberInt": "1"
+            },
+            "title": "La llegada",
+            "synopsis": "Comienza el recorrido.",
+            "durationSeconds": {
+              "$numberInt": "2400"
+            }
+          },
+          {
+            "id": "EP-002-02",
+            "number": {
+              "$numberInt": "2"
+            },
+            "title": "El viaje",
+            "synopsis": "Un nuevo destino.",
+            "durationSeconds": {
+              "$numberInt": "2520"
+            }
+          }
+        ]
+      },
+      {
+        "number": {
+          "$numberInt": "2"
+        },
+        "description": "Nuevos caminos",
+        "episodes": [
+          {
+            "id": "EP-002-03",
+            "number": {
+              "$numberInt": "1"
+            },
+            "title": "El regreso",
+            "synopsis": "El grupo vuelve a casa.",
+            "durationSeconds": {
+              "$numberInt": "2280"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "CNT-003",
+    "type": "documentary",
+    "title": "Semillas de futuro",
+    "synopsis": "Experiencias sobre agricultura sostenible.",
+    "releaseYear": {
+      "$numberInt": "2024"
+    },
+    "genres": [
+      "Ciencia"
+    ],
+    "countries": [
+      "Colombia"
+    ],
+    "audioLanguages": [
+      "es"
+    ],
+    "subtitleLanguages": [
+      "en"
+    ],
+    "ageRating": {
+      "$numberInt": "0"
+    },
+    "coverUrl": "https://example.org/covers/cnt-003.jpg",
+    "status": "published",
+    "createdAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "durationSeconds": {
+      "$numberInt": "3300"
+    },
+    "director": "María Rojas",
+    "topics": [
+      "Agricultura",
+      "Sostenibilidad"
+    ],
+    "interviewees": [
+      "Elena Gómez"
+    ],
+    "sources": [
+      {
+        "name": "Instituto Agrario",
+        "url": "https://example.org"
+      }
+    ]
+  },
+  {
+    "_id": "CNT-004",
+    "type": "movie",
+    "title": "La ciudad invisible",
+    "synopsis": "Un misterio policial se desarrolla en la ciudad.",
+    "releaseYear": {
+      "$numberInt": "2021"
+    },
+    "genres": [
+      "Suspenso"
+    ],
+    "countries": [
+      "Colombia"
+    ],
+    "audioLanguages": [
+      "es"
+    ],
+    "subtitleLanguages": [],
+    "ageRating": {
+      "$numberInt": "18"
+    },
+    "coverUrl": "https://example.org/covers/cnt-004.jpg",
+    "status": "published",
+    "createdAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "durationSeconds": {
+      "$numberInt": "7200"
+    },
+    "director": "Julián Méndez",
+    "cast": [
+      {
+        "actorName": "Sofía Valencia"
+      }
+    ]
+  },
+  {
+    "_id": "CNT-005",
+    "type": "movie",
+    "title": "La última estación",
+    "synopsis": "Un viaje que dejó recuerdos.",
+    "releaseYear": {
+      "$numberInt": "2020"
+    },
+    "genres": [
+      "Drama"
+    ],
+    "countries": [
+      "Colombia"
+    ],
+    "audioLanguages": [
+      "es"
+    ],
+    "subtitleLanguages": [],
+    "ageRating": {
+      "$numberInt": "7"
+    },
+    "coverUrl": "https://example.org/covers/cnt-005.jpg",
+    "status": "retired",
+    "createdAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "durationSeconds": {
+      "$numberInt": "5400"
+    },
+    "director": "Laura Muñoz",
+    "cast": [
+      {
+        "actorName": "Carlos Díaz",
+        "characterName": "Tomás"
+      }
+    ]
+  },
+  {
+    "_id": "CNT-006",
+    "type": "movie",
+    "title": "El último vuelo",
+    "synopsis": "Una tripulación enfrenta una emergencia.",
+    "releaseYear": {
+      "$numberInt": "2025"
+    },
+    "genres": [
+      "Acción"
+    ],
+    "countries": [
+      "Colombia",
+      "México"
+    ],
+    "audioLanguages": [
+      "es"
+    ],
+    "subtitleLanguages": [
+      "en"
+    ],
+    "ageRating": {
+      "$numberInt": "16"
+    },
+    "coverUrl": "https://example.org/covers/cnt-006.jpg",
+    "status": "draft",
+    "createdAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "durationSeconds": {
+      "$numberInt": "6500"
+    },
+    "director": "Andrés Salazar",
+    "cast": []
+  },
+  {
+    "_id": "CNT-007",
+    "type": "documentary",
+    "title": "Agua para todos",
+    "synopsis": "Una investigación sobre fuentes de agua.",
+    "releaseYear": {
+      "$numberInt": "2025"
+    },
+    "genres": [
+      "Ciencia",
+      "Sociedad"
+    ],
+    "countries": [
+      "Colombia"
+    ],
+    "audioLanguages": [
+      "es"
+    ],
+    "subtitleLanguages": [],
+    "ageRating": {
+      "$numberInt": "12"
+    },
+    "coverUrl": "https://example.org/covers/cnt-007.jpg",
+    "status": "published",
+    "createdAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "durationSeconds": {
+      "$numberInt": "3600"
+    },
+    "director": "Valeria Ospina",
+    "topics": [
+      "Agua",
+      "Medio ambiente"
+    ]
+  },
+  {
+    "_id": "CNT-008",
+    "type": "series",
+    "title": "Código nocturno",
+    "synopsis": "Un grupo resuelve problemas tecnológicos.",
+    "releaseYear": {
+      "$numberInt": "2026"
+    },
+    "genres": [
+      "Ciencia ficción",
+      "Suspenso"
+    ],
+    "countries": [
+      "Colombia"
+    ],
+    "audioLanguages": [
+      "es"
+    ],
+    "subtitleLanguages": [
+      "en"
+    ],
+    "ageRating": {
+      "$numberInt": "13"
+    },
+    "coverUrl": "https://example.org/covers/cnt-008.jpg",
+    "status": "published",
+    "createdAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-11-01T12:00:00.000Z"
+    },
+    "seasons": [
+      {
+        "number": {
+          "$numberInt": "1"
+        },
+        "description": "Las primeras señales",
+        "episodes": [
+          {
+            "id": "EP-008-01",
+            "number": {
+              "$numberInt": "1"
+            },
+            "title": "Mensaje desconocido",
+            "synopsis": "Aparece una señal extraña.",
+            "durationSeconds": {
+              "$numberInt": "2640"
+            }
+          },
+          {
+            "id": "EP-008-02",
+            "number": {
+              "$numberInt": "2"
+            },
+            "title": "Contraseña",
+            "synopsis": "El equipo investiga la señal.",
+            "durationSeconds": {
+              "$numberInt": "2580"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
