@@ -21,4 +21,11 @@ public class PlaybackPageController {
         model.addAttribute("episodeId", episodeId);
         return "playback/player";
     }
+
+    /** Mi lista, Continuar viendo e historial del perfil. */
+    @GetMapping("/profiles/{profileId}/activity")
+    public String activity(@PathVariable long profileId, Model model) {
+        model.addAttribute("profileId", profileId);
+        return "playback/activity";
+    }
 }

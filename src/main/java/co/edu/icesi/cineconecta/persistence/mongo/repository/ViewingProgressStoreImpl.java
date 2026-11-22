@@ -13,10 +13,24 @@ class ViewingProgressStoreImpl implements ViewingProgressStore {
         this.mongo = mongo;
     }
 
+    /**
+     * Solo actualiza si el progreso guardado proviene de la misma sesión o es
+     * más antiguo. Si existe uno más reciente de otra sesión, el filtro no
+     * coincide, el upsert intenta insertar y el índice único lo rechaza
+     * (DuplicateKeyException), que el servicio interpreta como "ya hay algo más nuevo".
+     */
     @Override
     public void upsert(ViewingProgressDocument p) {
-        Query query = Query.query(Criteria.where("profileId").is(p.getProfileId()).and("unitKey").is(p.getUnitKey()));
+        Criteria notNewer = new Criteria().orOperator(
+                Criteria.where("lastSessionId").is(p.getLastSessionId()),
+                Criteria.where("lastActivityAt").lte(p.getLastActivityAt()));
+        Query query = Query.query(new Criteria().andOperator(
+                Criteria.where("profileId").is(p.getProfileId()),
+                Criteria.where("unitKey").is(p.getUnitKey()),
+                notNewer));
         Update update = new Update()
+                .set("profileId", p.getProfileId())
+                .set("unitKey", p.getUnitKey())
                 .set("contentId", p.getContentId())
                 .set("lastPositionSeconds", p.getLastPositionSeconds())
                 .set("durationSeconds", p.getDurationSeconds())
