@@ -46,11 +46,14 @@ public class CatalogService {
                           CatalogFilters filters) {}
 
     public record Detail(Item content, String synopsis, List<String> countries, List<String> audioLanguages,
-                         List<String> subtitleLanguages, Integer durationSeconds, String director, List<Season> seasons) {}
+                         List<String> subtitleLanguages, Integer durationSeconds, String director, List<Season> seasons,
+                         List<CastMember> cast, List<String> topics, List<String> interviewees, List<String> sources) {}
 
     public record Season(Integer number, String description, List<Episode> episodes) {}
 
     public record Episode(String id, Integer number, String title, String synopsis, Integer durationSeconds) {}
+
+    public record CastMember(String name, String character) {}
 
     public Results search(long accountId, long profileId, CatalogFilters filters) {
         int maxAge = authorize(accountId, profileId);
@@ -83,7 +86,11 @@ public class CatalogService {
             throw ApiException.notFound(ErrorCodes.CONTENT_NOT_FOUND, "El contenido no está disponible en este perfil.");
         }
         return new Detail(Item.from(document), document.synopsis(), document.countries(), document.audioLanguages(),
-                document.subtitleLanguages(), document.durationSeconds(), document.director(), orderedSeasons(document));
+                document.subtitleLanguages(), document.durationSeconds(), document.director(), orderedSeasons(document),
+                document.cast() == null ? List.of() : document.cast().stream()
+                        .map(actor -> new CastMember(actor.actorName(), actor.characterName())).toList(),
+                document.topics(), document.interviewees(), document.sources() == null ? List.of()
+                        : document.sources().stream().map(ContentDocument.Source::name).toList());
     }
 
     private int authorize(long accountId, long profileId) {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminLoginController {
     public record LoginCsrf(String header, String parameter, String token) {}
 
-    @GetMapping("/admin/login")
+    @GetMapping(path = "/admin/login", produces = "application/json")
     public ResponseEntity<LoginCsrf> csrf(CsrfToken csrf) {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore())
                 .body(new LoginCsrf(csrf.getHeaderName(), csrf.getParameterName(), csrf.getToken()));

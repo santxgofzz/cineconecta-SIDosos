@@ -35,3 +35,7 @@ el índice text de la demo trabaja por términos y el sort puede ser
 explícito. Género y los dos campos de idioma son arreglos independientes,
 por lo que la consulta deja su evaluación al motor sin un único índice
 compuesto que abarque los tres.
+
+La vista Thymeleaf está en `/profiles/{profileId}/catalog` y requiere
+la sesión de un titular. El detalle enlaza al reproductor existente
+y actualiza Mi lista con sus endpoints y el token CSRF de la sesión.

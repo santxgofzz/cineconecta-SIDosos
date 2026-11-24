@@ -1,8 +1,9 @@
 # Módulo admin
 
 La API administrativa usa una sesión y un proveedor de autenticación
-independientes de los clientes. Para una prueba REST, pide el token con
-`GET /admin/login` y conserva la cookie de sesión. Envía un formulario con
+independientes de los clientes. La vista HTML está en `/admin/login`. Para
+una prueba REST, pide el token con `GET /admin/login` y
+`Accept: application/json` y conserva la cookie de sesión. Envía un formulario con
 `username`, `password` y el parámetro CSRF a `POST /admin/login`.
 El login devuelve 204 si las credenciales son válidas y 401 si se rechazan.
 Después de iniciar sesión, obtén un token CSRF nuevo con la misma sesión y
