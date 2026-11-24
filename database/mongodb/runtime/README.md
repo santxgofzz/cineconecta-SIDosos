@@ -14,6 +14,14 @@ mongosh "mongodb://localhost:27017" --file database/mongodb/runtime/01_playback_
 
 ## Catálogo y administradores
 
+En una instalación de desarrollo de la aplicación, ejecuta primero
+`01_playback_activity.js` para la actividad y luego `02_catalog_admin.js`
+para catálogo y administración. El script de actividad selecciona
+`cineconecta` explícitamente. El ejemplo aislado de catálogo que sigue
+ejecuta únicamente el script de catálogo y sus semillas. Evita ejecutar
+el script de actividad en un servidor que contenga una base de uso
+compartido durante las pruebas.
+
 `02_catalog_admin.js` prepara `contents` y `admin_users`. Ejecuta la migración
 con un usuario de despliegue autorizado a listar colecciones, leer los
 documentos para verificar compatibilidad, crear colecciones e índices y
@@ -77,7 +85,9 @@ historial. El arranque usa el `PasswordEncoder` BCrypt de Spring y crea
 la cuenta solo si el nombre normalizado es nuevo. Arrancar sin ambas
 credenciales omite el bootstrap. Desactiva el perfil y retira las variables
 cuando termine la preparación local. La autenticación de esta cuenta
-corresponde a la fase administrativa.
+se hace desde `/admin/login`. Para iniciar la aplicación,
+configura `MONGO_URI`, `ORACLE_JDBC_URL`, `ORACLE_USERNAME` y
+`ORACLE_PASSWORD` en el entorno de ejecución y usa `mvn spring-boot:run`.
 
 Queda pendiente alinear las referencias `profileId` y `subscriptionId` con
 las semillas Oracle reales.

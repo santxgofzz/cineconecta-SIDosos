@@ -23,3 +23,7 @@
 
 Para evidencia: conservar comando, dataset/volumen, salida, explicación, fecha y
 capturas o reportes en `docs/evidencias/`. No inventar resultados.
+
+El módulo de catálogo y administración tiene una
+[matriz de pruebas y trazabilidad](catalogo-mongodb.md) con evidencia
+de MongoDB local, pruebas web y escenarios Oracle simulados.
