@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="_csrf" th:content="${_csrf?.token}">
+  <meta name="_csrf_header" th:content="${_csrf?.headerName}">
+  <title>Mi actividad</title>
+  <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<main class="activity" th:attr="data-profile=${profileId}">
+  <h1>Mi actividad</h1>
+  <p class="muted">Perfil <code th:text="${profileId}">0</code></p>
+  <p id="msg" class="msg" role="status" aria-live="polite"></p>
+
+  <section>
+    <h2>Continuar viendo</h2>
+    <ul class="list" id="continue"><li class="muted">Cargando…</li></ul>
+  </section>
+
+  <section>
+    <h2>Mi lista</h2>
+    <form class="row" id="addForm">
+      <input id="addId" placeholder="ID de contenido (p. ej. CNT-001)" required>
+      <button type="submit">Agregar</button>
+    </form>
+    <ul class="list" id="mylist"><li class="muted">Cargando…</li></ul>
+  </section>
+
+  <section>
+    <h2>Historial de sesiones</h2>
+    <table>
+      <thead><tr><th>Inicio</th><th>Contenido</th><th>Visto</th><th>Posición</th><th>Cierre</th></tr></thead>
+      <tbody id="history"></tbody>
+    </table>
+  </section>
+</main>
+
+<script>
+(() => {
+  const profileId = document.querySelector('.activity').dataset.profile;
+  const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
+  const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
+  const base = `/api/profiles/${profileId}`;
+  const $ = id => document.getElementById(id);
+  const fmt = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const playerUrl = (c, e) => `/profiles/${profileId}/player?contentId=${encodeURIComponent(c)}` +
+      (e ? `&episodeId=${encodeURIComponent(e)}` : '');
+
+  async function call(method, url) {
+    const headers = {};
+    if (csrfToken && csrfHeader) headers[csrfHeader] = csrfToken;
+    const res = await fetch(url, { method, headers });
+    const data = res.status === 204 ? null : await res.json().catch(() => null);
+    if (!res.ok) throw data || { message: 'Error ' + res.status };
+    return data;
+  }
+  const fail = err => { $('msg').textContent = err.message || 'Error'; $('msg').classList.add('error'); };
+
+  async function loadContinue() {
+    const items = await call('GET', `${base}/continue-watching`);
+    $('continue').innerHTML = items.length ? items.map(i => `
+      <li><strong>${esc(i.title)}</strong>${i.episodeId ? ' · ' + esc(i.unitTitle) : ''}
+        <span class="tag">${esc(i.contentType)}</span>
+        <span>${fmt(i.positionSeconds)} / ${fmt(i.durationSeconds)} (${i.percent}%)</span>
+        <a href="${playerUrl(i.contentId, i.episodeId)}">Continuar</a></li>`).join('')
+      : '<li class="muted">No tienes contenidos pendientes.</li>';
+  }
+
+  async function loadMyList() {
+    const items = await call('GET', `${base}/my-list`);
+    $('mylist').innerHTML = items.length ? items.map(i => `
+      <li><strong>${esc(i.title || i.contentId)}</strong>
+        ${i.available ? `<span class="tag">${esc(i.type)}</span>`
+                      : `<span class="tag off">${i.availability === 'RETIRED' ? 'Retirado' : 'No disponible'}</span>`}
+        ${i.available && i.type !== 'series' ? `<a href="${playerUrl(i.contentId)}">Reproducir</a>` : ''}
+        <button type="button" data-remove="${esc(i.contentId)}">Quitar</button></li>`).join('')
+      : '<li class="muted">Tu lista está vacía.</li>';
+  }
+
+  async function loadHistory() {
+    const page = await call('GET', `${base}/history?size=20`);
+    $('history').innerHTML = page.items.map(s => `
+      <tr><td>${new Date(s.startedAt).toLocaleString()}</td>
+        <td>${esc(s.title || s.contentId)}${s.episodeId ? ' · ' + esc(s.episodeId) : ''}
+          ${s.contentAvailable ? '' : '<span class="tag off">No disponible</span>'}</td>
+        <td>${fmt(s.watchedSeconds)}</td><td>${fmt(s.lastPositionSeconds)}</td>
+        <td>${esc(s.endReason || 'abierta')}</td></tr>`).join('');
+  }
+
+  $('addForm').addEventListener('submit', async ev => {
+    ev.preventDefault();
+    try { await call('PUT', `${base}/my-list/${encodeURIComponent($('addId').value.trim())}`); $('addId').value = ''; await loadMyList(); }
+    catch (err) { fail(err); }
+  });
+  $('mylist').addEventListener('click', async ev => {
+    const id = ev.target.dataset?.remove;
+    if (!id) return;
+    try { await call('DELETE', `${base}/my-list/${encodeURIComponent(id)}`); await loadMyList(); }
+    catch (err) { fail(err); }
+  });
+
+  Promise.all([loadContinue(), loadMyList(), loadHistory()]).catch(fail);
+})();
+</script>
+</body>
+</html>
