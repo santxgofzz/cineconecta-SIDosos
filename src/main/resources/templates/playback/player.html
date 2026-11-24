@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="_csrf" th:content="${_csrf?.token}">
+  <meta name="_csrf_header" th:content="${_csrf?.headerName}">
+  <title>Reproductor simulado</title>
+  <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<main class="player"
+      th:attr="data-profile=${profileId},data-content=${contentId},data-episode=${episodeId}">
+  <p><a th:href="@{/profiles/{id}/activity(id=${profileId})}">&larr; Mi actividad</a></p>
+  <h1>Reproductor simulado</h1>
+  <p class="muted">No se transmite video: los controles registran tiempo visto, posición y sesiones.</p>
+
+  <section class="screen">
+    <div class="unit" id="unit">Contenido <code th:text="${contentId}">CNT</code>
+      <span th:if="${episodeId}"> · episodio <code th:text="${episodeId}">EP</code></span></div>
+    <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+    <div class="times">
+      <span>Posición <strong id="pos">0:00</strong> / <span id="dur">--:--</span></span>
+      <span>Visto realmente <strong id="watched">0:00</strong></span>
+      <span id="badge" class="badge"></span>
+    </div>
+  </section>
+
+  <section class="controls">
+    <button id="btnStart" type="button">Iniciar / reanudar</button>
+    <button id="btnPause" type="button" disabled>Pausar</button>
+    <button id="btnSeek" type="button" disabled>Avanzar +5 min (salto)</button>
+    <button id="btnFinish" type="button" disabled>Finalizar</button>
+  </section>
+
+  <p id="msg" class="msg" role="status" aria-live="polite"></p>
+</main>
+
+<script>
+(() => {
+  const root = document.querySelector('.player');
+  const profileId = root.dataset.profile;
+  const contentId = root.dataset.content;
+  const episodeId = root.dataset.episode || null;
+  const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
+  const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
+  const TICK = 5; // segundos reproducidos por tick
+  const MAX_RETRIES = 3;
+
+  let state = null, seq = 0, timer = null, busy = false;
+  const $ = id => document.getElementById(id);
+  const fmt = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+
+  async function call(method, url, body) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (csrfToken && csrfHeader) headers[csrfHeader] = csrfToken;
+    // Reintentos: el servidor ignora eventos con seq ya aplicado, así que repetir es seguro.
+    for (let attempt = 1; ; attempt++) {
+      let res;
+      try {
+        res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
+      } catch (netErr) {
+        if (attempt < MAX_RETRIES) { await new Promise(r => setTimeout(r, 400 * attempt)); continue; }
+        throw { message: 'Sin conexión con el servidor. No se confirmó el cambio.' };
+      }
+      if (res.status === 503 && attempt < MAX_RETRIES) { await new Promise(r => setTimeout(r, 400 * attempt)); continue; }
+      const data = res.status === 204 ? null : await res.json().catch(() => null);
+      if (!res.ok) throw data || { message: 'Error ' + res.status };
+      return data;
+    }
+  }
+
+  function render() {
+    if (!state) return;
+    $('pos').textContent = fmt(state.positionSeconds);
+    $('dur').textContent = fmt(state.durationSeconds);
+    $('watched').textContent = fmt(state.watchedSeconds);
+    $('barFill').style.width = (100 * state.positionSeconds / state.durationSeconds) + '%';
+    $('badge').textContent = state.completed ? 'Completado' : (state.open ? 'Reproduciendo' : (state.endReason || ''));
+    const open = state.open;
+    $('btnPause').disabled = !open;
+    $('btnSeek').disabled = !open;
+    $('btnFinish').disabled = !open;
+    $('btnStart').disabled = open;
+  }
+
+  function show(msg, isError) {
+    $('msg').textContent = msg || '';
+    $('msg').classList.toggle('error', !!isError);
+  }
+
+  async function send(type, extra) {
+    if (!state || busy) return;
+    busy = true;
+    const event = Object.assign({ seq: ++seq, type }, extra || {});
+    try {
+      state = await call('POST', `/api/profiles/${profileId}/playback/sessions/${state.sessionId}/events`, event);
+      seq = Math.max(seq, state.lastEventSeq);
+      render();
+      if (!state.open) stopTimer();
+      return true;
+    } catch (err) {
+      stopTimer();
+      show(err.message || 'No se pudo registrar el evento.', true);
+      return false;
+    } finally {
+      busy = false;
+    }
+  }
+
+  function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+
+  $('btnStart').addEventListener('click', async () => {
+    show('');
+    try {
+      state = await call('POST', `/api/profiles/${profileId}/playback/sessions`, { contentId, episodeId });
+      seq = state.lastEventSeq;
+      render();
+      stopTimer();
+      timer = setInterval(() => send('WATCH', { seconds: TICK }), TICK * 1000);
+    } catch (err) {
+      show(err.message || 'No se pudo iniciar la reproducción.', true);
+    }
+  });
+  $('btnPause').addEventListener('click', () => { stopTimer(); send('PAUSE'); });
+  $('btnFinish').addEventListener('click', () => { stopTimer(); send('FINISH'); });
+  $('btnSeek').addEventListener('click', () =>
+    send('SEEK', { positionSeconds: Math.min(state.durationSeconds, state.positionSeconds + 300) }));
+  // Si se cierra la pestaña sin pausar, el servidor cierra la sesión como "interrupted"
+  // la próxima vez que el perfil inicie esa misma unidad.
+})();
+</script>
+</body>
+</html>
