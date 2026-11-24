@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingresos por plan | CineConecta</title>
+  <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+  <main>
+    <p><a th:href="@{/}">Volver al inicio</a></p>
+    <h1>Ingresos y suscripciones por plan</h1>
+    <p>El informe suma los pagos recibidos y cuenta las suscripciones iniciadas entre las fechas seleccionadas.</p>
+
+    <form method="get" th:action="@{/reportes/ingresos-por-plan}">
+      <p>
+        <label for="desde">Desde</label>
+        <input id="desde" name="desde" type="date" th:value="${desde}" required>
+      </p>
+      <p>
+        <label for="hasta">Hasta (incluida)</label>
+        <input id="hasta" name="hasta" type="date" th:value="${hasta}" required>
+      </p>
+      <button type="submit">Generar informe</button>
+    </form>
+
+    <p role="alert" th:if="${error}" th:text="${error}"></p>
+
+    <section th:if="${resultados != null}">
+      <h2>Resultados</h2>
+      <p th:if="${#lists.isEmpty(resultados)}">No hay planes registrados.</p>
+      <table th:unless="${#lists.isEmpty(resultados)}">
+        <thead>
+          <tr>
+            <th scope="col">Plan</th>
+            <th scope="col">Ingresos</th>
+            <th scope="col">Suscripciones iniciadas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="fila : ${resultados}">
+            <td th:text="${fila.nombrePlan}"></td>
+            <td th:text="${fila.ingresos}"></td>
+            <td th:text="${fila.cantidadSuscripciones}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

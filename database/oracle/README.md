@@ -18,3 +18,12 @@ modelo de equipo deben documentarse y evitar campos que contradigan sus catálog
 
 Las semillas de Oracle deben coordinarse con los `profileId` y `subscriptionId`
 de MongoDB. No asumir que los IDs ficticios 15/16/21 y 8/9/10 ya existen.
+
+## Informe SQL implementado
+
+`06_report_ingresos_y_suscripciones_por_plan.sql` recibe `:fecha_inicio` y
+`:fecha_fin` como parametros `TIMESTAMP` y usa el intervalo `[inicio, fin)`.
+Suma `PAYMENTS.amount` por `PAYMENTS.paidAt` y cuenta suscripciones por
+`SUBSCRIPTIONS.startsAt`, agrupando ambas metricas por el plan de cada
+suscripcion. Devuelve todos los planes, incluidos los que tienen cero
+actividad en el periodo.

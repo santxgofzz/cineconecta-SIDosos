@@ -17,7 +17,7 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
 - `database/mongodb/demo/`: scripts **originales**, validadores, índices y JSON
   enviados por el equipo; usan `cineconecta_modelo_demo` con IDs SQL ficticios.
 - `database/mongodb/runtime/`: tareas para crear BD real `cineconecta`.
-- `database/oracle/`: plan de scripts SQL todavía no implementados.
+- `database/oracle/`: scripts de esquema pendientes e informe SQL de ingresos y suscripciones por plan.
 - `src/`: base mínima de Spring Boot y un ejemplo unitario de vigencia de suscripción.
 
 ## Primeros pasos
@@ -26,7 +26,8 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
    o al servidor Oracle autorizado por el curso.
 2. (Opcional) Levantar Mongo local con `docker compose up -d mongodb`.
 3. Configurar en el sistema/IDE las variables del archivo `.env.example`.
-   **Spring no lee `.env` automáticamente.**
+   **Spring no lee `.env` automáticamente:** hay que definir las variables en
+   el entorno o en la configuración de ejecución del IDE.
 4. Crear el esquema Oracle con los scripts del equipo (PENDIENTES).
 5. Adaptar y ejecutar `database/mongodb/runtime/` una vez estén alineados los IDs
    con Oracle. NO usar la demo como BD real.
@@ -58,7 +59,8 @@ admin de demo no permite iniciar sesión. No cargarla en la base productiva.
 - `integration`: reglas que requieren consultar ambos motores.
 - `common`: errores, respuestas y validaciones compartidas.
 
-Los módulos contienen marcadores README, NO controladores/servicios completos.
+Los módulos están en construcción; el informe de ingresos por plan ya cuenta
+con controlador, servicio y repositorio Spring Boot.
 
 ## Flujo de trabajo Git
 

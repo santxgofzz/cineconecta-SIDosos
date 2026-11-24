@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "src/main/resources/templates/report/ingresos-por-plan.html"
+        ],
+        "createdAt": "2026-11-24T17:45:17.470Z",
+        "reason": "Agent: linked site.css defines body 1rem, h2 1.5rem, and h1 at least 2rem; detector reports 16px for all because it does not resolve the linked stylesheet."
+      }
+    ]
+  }
+}
