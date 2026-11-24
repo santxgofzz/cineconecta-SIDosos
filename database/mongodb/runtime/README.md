@@ -15,7 +15,8 @@ mongosh "mongodb://localhost:27017" --file database/mongodb/runtime/01_playback_
 ## Pendiente
 
 1. Script de `contents` y `admin_users` para la BD `cineconecta` (catálogo/admin).
-2. Alinear referencias `profileId` / `subscriptionId` con semillas Oracle reales.
+2. Las referencias de la demo usan los IDs de `database/oracle/03_seed.sql`;
+   si se cambian, actualizar ambos lados antes de cargar actividad en MongoDB.
 3. Crear administrador mediante hash BCrypt real generado por el servidor.
 4. Separar carga de demo/semillas de benchmarking; NO restaurar datos de demo
    sobre una BD compartida sin revisarlos.

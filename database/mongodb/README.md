@@ -12,8 +12,10 @@ sintéticos **aislados**. Incluyen:
 - `json/*.json`
 - `LEEME_PASO_A_PASO.md`
 
-**No conectes el backend real a esa base demo**: contiene referencias Oracle de
-prueba no verificadas y un administrador desactivado con hash marcador.
+**No conectes el backend real a esa base demo**: contiene actividad sintetica y
+un administrador desactivado con hash marcador. Sus IDs de perfil/suscripcion
+coinciden con `database/oracle/03_seed.sql`, pero MongoDB no valida esas
+referencias ni confirma que la semilla se haya ejecutado en tu Oracle.
 
 ## `runtime/`: adaptación para la aplicación real
 

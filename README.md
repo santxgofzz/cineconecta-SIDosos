@@ -17,7 +17,7 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
 - `database/mongodb/demo/`: scripts **originales**, validadores, índices y JSON
   enviados por el equipo; usan `cineconecta_modelo_demo` con IDs SQL ficticios.
 - `database/mongodb/runtime/`: tareas para crear BD real `cineconecta`.
-- `database/oracle/`: scripts de esquema pendientes e informe SQL de ingresos y suscripciones por plan.
+- `database/oracle/`: esquema (`01_schema.sql`), datos sinteticos (`03_seed.sql`) e informe SQL de ingresos y suscripciones por plan; faltan restricciones adicionales e índices.
 - `src/`: base mínima de Spring Boot y un ejemplo unitario de vigencia de suscripción.
 
 ## Primeros pasos
@@ -28,7 +28,7 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
 3. Configurar en el sistema/IDE las variables del archivo `.env.example`.
    **Spring no lee `.env` automáticamente:** hay que definir las variables en
    el entorno o en la configuración de ejecución del IDE.
-4. Crear el esquema Oracle con los scripts del equipo (PENDIENTES).
+4. En SQL Developer, conecta al esquema de la aplicación y ejecuta con **Run Script (F5)** `database/oracle/01_schema.sql`; después, ejecuta una sola vez `database/oracle/03_seed.sql` en ese esquema de prueba.
 5. Adaptar y ejecutar `database/mongodb/runtime/` una vez estén alineados los IDs
    con Oracle. NO usar la demo como BD real.
 6. En la raíz del repo: `mvn test`, `mvn spring-boot:run`.
