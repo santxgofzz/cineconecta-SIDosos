@@ -8,14 +8,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JdbcAccountDataGatewayTest {
     @ParameterizedTest
-    @CsvSource(value = {"1,true", "Y,true", "s,true", "T,true", "0,false", "N,false", "NULL,false"},
+    @CsvSource(value = {"A,true", "a,true", "I,false", "1,true", "Y,true", "s,true", "T,true", "0,false", "N,false", "NULL,false"},
             nullValues = "NULL")
     void parsesActiveFlag(String raw, boolean expected) {
         assertEquals(expected, JdbcAccountDataGateway.isActive(raw));
     }
 
     @ParameterizedTest
-    @CsvSource({"STARTS_AT <= ?", "ENDS_AT > ?"})
+    @CsvSource({"STARTSAT <= ?", "ENDSAT > ?"})
     void subscriptionWindowIsStartInclusiveEndExclusive(String fragment) {
         assertTrue(JdbcAccountDataGateway.SQL_ACTIVE_SUBSCRIPTION.contains(fragment));
     }
