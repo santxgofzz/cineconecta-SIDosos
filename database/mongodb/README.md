@@ -19,6 +19,14 @@ referencias ni confirma que la semilla se haya ejecutado en tu Oracle.
 
 ## `runtime/`: adaptación para la aplicación real
 
-Pendiente: script de inicialización de la BD `cineconecta` que preserve las
-cinco colecciones, `$jsonSchema` e índices, y semillas coordinadas con Oracle.
-Agregar pruebas para validaciones, duplicados y consulta por fecha.
+Contiene los validadores e índices de `cineconecta`, el catálogo y la actividad
+de reproducción, así como la semilla local de sesiones del informe de consumo.
+Los scripts no borran datos de producción; revisa el README de runtime antes de
+ejecutarlos en una base compartida.
+
+## `benchmark/`: volumen y planes de ejecución
+
+Usa la base aislada `cineconecta_benchmark` y la colección
+`benchmark_viewing_sessions` para comparar `COLLSCAN` e `IXSCAN` con 500000
+sesiones. Las instrucciones comunes y la comparación con PostgreSQL están en
+`database/benchmark/README.md`.

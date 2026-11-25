@@ -12,6 +12,12 @@ Pendiente de implementar:
 2. `04_indexes.sql` - índices por consultas y explicación.
 3. `05_benchmark.sql` - comparar una consulta, EXPLAIN PLAN, volumen y mediciones.
 
+El benchmark comparativo solicitado para PostgreSQL y MongoDB está en
+`database/benchmark/README.md`. PostgreSQL replica las tablas necesarias del
+informe, porque la aplicación operativa sigue usando Oracle; esas mediciones no
+representan el rendimiento de Oracle. La medición específica de Oracle indicada
+como `05_benchmark.sql` continúa pendiente.
+
 `03_seed.sql` agrega datos sinteticos para desarrollo. Ejecutarlo una vez, despues
 de `01_schema.sql`, en un esquema vacio/de prueba. Inserta planes, cuentas, perfiles,
 suscripciones de 30 dias y pagos; no borra ni actualiza filas. Los IDs de perfiles
