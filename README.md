@@ -15,7 +15,7 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
 
 - `docs/`: enunciado, rúbrica, MR, modelo documental y diagrama Mongo.
 - `database/mongodb/demo/`: scripts **originales**, validadores, índices y JSON
-  enviados por el equipo; usan `cineconecta_modelo_demo` con IDs SQL ficticios.
+  enviados por el equipo; usan `cineconecta_modelo_demo` con IDs SQL de prueba.
 - `database/mongodb/runtime/`: tareas para crear BD real `cineconecta`.
 - `database/oracle/`: esquema (`01_schema.sql`), datos sinteticos (`03_seed.sql`) e informe SQL de ingresos y suscripciones por plan; faltan restricciones adicionales e índices.
 - `src/`: base mínima de Spring Boot y un ejemplo unitario de vigencia de suscripción.
@@ -28,12 +28,23 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
 3. Configurar en el sistema/IDE las variables del archivo `.env.example`.
    **Spring no lee `.env` automáticamente:** hay que definir las variables en
    el entorno o en la configuración de ejecución del IDE.
-4. En SQL Developer, conecta al esquema de la aplicación y ejecuta con **Run Script (F5)** `database/oracle/01_schema.sql`; después, ejecuta una sola vez `database/oracle/03_seed.sql` en ese esquema de prueba.
-5. Adaptar y ejecutar `database/mongodb/runtime/` una vez estén alineados los IDs
-   con Oracle. NO usar la demo como BD real.
+4. En SQL Developer, conecta al esquema de prueba y ejecuta con **Run Script
+   (F5)** `database/oracle/01_schema.sql`; después, ejecuta una sola vez
+   `database/oracle/03_seed.sql` en ese esquema.
+5. Preparar MongoDB con los [scripts runtime](database/mongodb/runtime/README.md).
+   Las referencias de actividad deben coincidir con Oracle antes de cargarlas.
+   Mantén la demo en su base propia.
 6. En la raíz del repo: `mvn test`, `mvn spring-boot:run`.
 7. Acceder a `http://localhost:8080/`. La app necesita conexiones Oracle y
    Mongo válidas para arrancar, aun cuando la página inicial sea básica.
+
+### Catálogo y administración
+
+- `/admin/login` abre el acceso administrativo independiente de MongoDB.
+- `/profiles/{profileId}/catalog` exige la sesión del titular, el perfil
+  propio activo y una suscripción vigente.
+- Consulta el [modelo y decisiones MongoDB](docs/modelos/catalogo-mongodb.md)
+  y las [pruebas del módulo](docs/pruebas/catalogo-mongodb.md).
 
 ### Solo demostrar el Mongo del diseño
 
@@ -83,10 +94,10 @@ obligatorios están en `docs/pruebas/plan.md`.
 
 ## Seguridad
 
-No incluir credenciales en Git. El archivo SecurityConfig es **temporal**;
-antes de la entrega deben implementar autenticación real para titulares de
-Oracle y administradores independientes en MongoDB, y comprobar permisos de
-cada operación en servidor.
+No incluir credenciales en Git. La cadena general de `SecurityConfig`
+mantiene pendiente la integración con la autenticación de titulares Oracle.
+`AdminSecurityConfig` usa el acceso MongoDB independiente, con BCrypt,
+roles y CSRF para las operaciones de administración.
 
 ## Limitaciones de este ZIP
 

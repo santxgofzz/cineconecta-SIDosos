@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{catalog/fragments :: head('Catálogo')}"></head>
+<body class="catalog-ui">
+<header th:replace="~{catalog/fragments :: header(false)}"></header>
+<main class="catalog-main" th:with="filters=${result.filters}">
+  <h1>Explorar catálogo</h1>
+  <form class="catalog-filters" method="get" th:action="@{/profiles/{profileId}/catalog(profileId=${profileId})}">
+    <label class="catalog-query">Buscar por título
+      <input type="search" name="q" maxlength="100" th:value="${filters.q}" placeholder="Título">
+    </label>
+    <label>Tipo
+      <select name="type">
+        <option value="">Todos</option>
+        <option value="movie" th:selected="${filters.type == 'movie'}">Película</option>
+        <option value="series" th:selected="${filters.type == 'series'}">Serie</option>
+        <option value="documentary" th:selected="${filters.type == 'documentary'}">Documental</option>
+      </select>
+    </label>
+    <label>Género <input name="genre" maxlength="80" th:value="${filters.genre}" placeholder="Ej. Drama"></label>
+    <label>Idioma de audio o subtítulos
+      <input name="language" maxlength="40" th:value="${filters.language}" placeholder="Ej. es">
+    </label>
+    <label>Año <input type="number" min="1888" max="2100" name="year" th:value="${filters.year}"></label>
+    <input type="hidden" name="size" th:value="${filters.size}">
+    <div class="catalog-actions">
+      <button class="catalog-primary" type="submit">Buscar</button>
+      <a th:href="@{/profiles/{profileId}/catalog(profileId=${profileId})}">Limpiar</a>
+    </div>
+  </form>
+  <p class="catalog-muted" th:text="|${result.totalElements} títulos|"></p>
+  <p class="catalog-panel" th:if="${result.items.empty}">No hay títulos en esta página. Cambia los filtros o vuelve a una página anterior.</p>
+  <ul class="catalog-grid" th:unless="${result.items.empty}">
+    <li class="catalog-card" th:each="item : ${result.items}">
+      <a th:href="@{/profiles/{profileId}/catalog/{id}(profileId=${profileId},id=${item.id})}">
+        <div th:replace="~{catalog/fragments :: cover(${item})}"></div>
+        <div class="catalog-card-info">
+          <h2 th:text="${item.title}"></h2>
+          <p><span th:replace="~{catalog/fragments :: type(${item.type})}"></span>
+            <span th:text="| · ${item.releaseYear} · ${item.ageRating}+|"></span></p>
+        </div>
+      </a>
+    </li>
+  </ul>
+  <nav class="catalog-actions catalog-pagination" aria-label="Paginación" th:if="${result.totalPages > 1 or result.page > 0}">
+    <a th:if="${result.page > 0}" th:href="@{/profiles/{profileId}/catalog(profileId=${profileId},q=${filters.q},type=${filters.type},genre=${filters.genre},language=${filters.language},year=${filters.year},size=${filters.size},page=${result.page - 1})}">Anterior</a>
+    <span th:text="|Página ${result.page + 1} de ${result.totalPages}|"></span>
+    <a th:if="${result.page + 1 < result.totalPages}" th:href="@{/profiles/{profileId}/catalog(profileId=${profileId},q=${filters.q},type=${filters.type},genre=${filters.genre},language=${filters.language},year=${filters.year},size=${filters.size},page=${result.page + 1})}">Siguiente</a>
+  </nav>
+</main>
+</body>
+</html>
