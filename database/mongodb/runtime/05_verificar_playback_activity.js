@@ -82,8 +82,8 @@
   revisarPlan("Sesiones abiertas de una unidad", "viewing_sessions",
     target.viewing_sessions.find({ profileId: pid, unitKey: "verificacion", endedAt: null }),
     "ix_sessions_profile_history", false);
-  revisarPlan("Sesiones por periodo y suscripción (informes)", "viewing_sessions",
-    target.viewing_sessions.find({ startedAt: { $gte: haceUnMes, $lt: ahora }, subscriptionId: NumberLong("1") }),
+  revisarPlan("Sesiones por periodo (informe de consumo)", "viewing_sessions",
+    target.viewing_sessions.find({ startedAt: { $gte: haceUnMes, $lt: ahora } }),
     "ix_sessions_period_sub", false);
 
   print("\n[4] Consistencia de datos");

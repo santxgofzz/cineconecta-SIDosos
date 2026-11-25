@@ -5,3 +5,4 @@ con capturas legibles, scripts reproducibles y una breve interpretación.
 No subir `.env`, hashes reales, tokens ni credenciales de usuarios reales.
 
 - [Resultados del módulo de catálogo y administración](catalogo-mongodb.md).
+- [Reproducción, Mi lista y actividad](reproduccion-actividad.md).
