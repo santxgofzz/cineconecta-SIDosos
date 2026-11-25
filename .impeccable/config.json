@@ -10,7 +10,7 @@
           "src/main/resources/templates/report/ingresos-por-plan.html"
         ],
         "createdAt": "2026-11-24T17:45:17.470Z",
-        "reason": "Agent: linked site.css defines body 1rem, h2 1.5rem, and h1 at least 2rem; detector reports 16px for all because it does not resolve the linked stylesheet."
+        "reason": "Agent verified the template loads site.css: body is 1rem, h2 is 1.5rem, and h1 is clamp(2rem, 1.5rem + 1.5vw, 2.5rem); detector falsely treats external CSS roles as 16px."
       }
     ]
   }

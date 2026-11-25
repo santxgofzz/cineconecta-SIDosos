@@ -12,6 +12,22 @@
 mongosh "mongodb://localhost:27017" --file database/mongodb/runtime/01_playback_activity.js
 ```
 
+Para probar el informe de consumo con las suscripciones de
+`database/oracle/03_seed.sql`, el fixture local
+`05_seed_consumption_demo.js` agrega diez sesiones a `cineconecta`. Inserta
+solo IDs de sesión que falten; no reemplaza ni elimina documentos.
+
+Si `mongosh` no está instalado en Windows, ejecuta el fixture desde el
+contenedor Mongo local:
+
+```powershell
+docker cp .\database\mongodb\runtime\05_seed_consumption_demo.js cineconecta-mongodb:/tmp/05_seed_consumption_demo.js
+docker exec cineconecta-mongodb mongosh "mongodb://localhost:27017/cineconecta" --file /tmp/05_seed_consumption_demo.js
+```
+
+Usa el periodo `2026-11-01` a `2026-12-01` en
+`/admin/reportes/consumo-por-plan` para incluir las sesiones de ejemplo.
+
 ## Catálogo y administradores
 
 En una instalación de desarrollo de la aplicación, ejecuta primero
