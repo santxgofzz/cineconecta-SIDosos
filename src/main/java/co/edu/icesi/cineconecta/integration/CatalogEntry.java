@@ -1,5 +1,9 @@
 package co.edu.icesi.cineconecta.integration;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +11,7 @@ import java.util.Optional;
  * Vista de solo lectura de un documento de {@code contents} con lo necesario
  * para Mi lista y reproducción. El módulo de catálogo es el dueño del documento.
  */
-public record CatalogEntry(String id, String type, String title, String status, Integer ageRating,
+public record CatalogEntry(@MongoId(FieldType.STRING) String id, String type, String title, String status, Integer ageRating,
                            Integer durationSeconds, List<Season> seasons) {
     public static final String MOVIE = "movie";
     public static final String SERIES = "series";
@@ -17,7 +21,7 @@ public record CatalogEntry(String id, String type, String title, String status, 
 
     public record Season(Integer number, List<Episode> episodes) {}
 
-    public record Episode(String id, Integer number, String title, Integer durationSeconds) {}
+    public record Episode(@Field("id") String id, Integer number, String title, Integer durationSeconds) {}
 
     public boolean isPublished() { return PUBLISHED.equals(status); }
 

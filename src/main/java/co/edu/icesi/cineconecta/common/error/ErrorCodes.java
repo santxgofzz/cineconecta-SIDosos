@@ -9,6 +9,8 @@ public final class ErrorCodes {
     public static final String PROFILE_INACTIVE = "PROFILE_INACTIVE";
     public static final String SUBSCRIPTION_REQUIRED = "SUBSCRIPTION_REQUIRED";
     public static final String CONTENT_NOT_FOUND = "CONTENT_NOT_FOUND";
+    public static final String INVALID_CONTENT = "INVALID_CONTENT";
+    public static final String CONTENT_CONFLICT = "CONTENT_CONFLICT";
     public static final String CONTENT_NOT_AVAILABLE = "CONTENT_NOT_AVAILABLE";
     public static final String AGE_RATING_EXCEEDED = "AGE_RATING_EXCEEDED";
     public static final String EPISODE_REQUIRED = "EPISODE_REQUIRED";
