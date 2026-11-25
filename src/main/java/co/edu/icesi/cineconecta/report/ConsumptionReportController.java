@@ -12,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -68,31 +70,14 @@ public class ConsumptionReportController {
     }
 
     private static String toCsv(ConsumptionReport report) {
-        StringBuilder csv = new StringBuilder("\uFEFFPlan,Tipo de contenido,Sesiones,Segundos consumidos,Perfiles únicos\r\n");
+        List<String> rows = new ArrayList<>();
+        rows.add(ReportCsvExport.row("Plan", "Tipo de contenido", "Sesiones",
+                "Segundos consumidos", "Perfiles únicos"));
         for (ConsumptionReportRow row : report.filas()) {
-            csv.append(csvCell(row.nombrePlan())).append(',')
-                    .append(csvCell(row.tipoContenido())).append(',')
-                    .append(row.sesiones()).append(',')
-                    .append(row.segundosConsumidos()).append(',')
-                    .append(row.perfilesUnicos()).append("\r\n");
+            rows.add(ReportCsvExport.row(row.nombrePlan(), row.tipoContenido(), row.sesiones(),
+                    row.segundosConsumidos(), row.perfilesUnicos()));
         }
-        csv.append(csvCell("Total")).append(",,")
-                .append(report.sesionesTotales()).append(',')
-                .append(report.segundosTotales()).append(",\r\n");
-        return csv.toString();
-    }
-
-    private static String csvCell(String value) {
-        String safeValue = value == null ? "" : value;
-        int firstNonWhitespace = 0;
-        while (firstNonWhitespace < safeValue.length()
-                && Character.isWhitespace(safeValue.charAt(firstNonWhitespace))) {
-            firstNonWhitespace++;
-        }
-        if (firstNonWhitespace < safeValue.length()
-                && "=+-@".indexOf(safeValue.charAt(firstNonWhitespace)) >= 0) {
-            safeValue = "'" + safeValue;
-        }
-        return "\"" + safeValue.replace("\"", "\"\"") + "\"";
+        rows.add(ReportCsvExport.row("Total", "", report.sesionesTotales(), report.segundosTotales(), ""));
+        return ReportCsvExport.document(rows);
     }
 }

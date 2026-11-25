@@ -1,9 +1,16 @@
 # Módulo report
 
-El informe de ingresos y cantidad de suscripciones por plan está disponible en
-`GET /reportes/ingresos-por-plan`. La página recibe fechas inclusivas; el
-servicio convierte la fecha final al límite exclusivo del día siguiente antes
-de consultar Oracle con `NamedParameterJdbcTemplate`.
+El centro administrativo de informes está en `GET /admin/reportes` y requiere
+un administrador autenticado (`ROLE_ADMIN`). Desde allí se accede a cada informe.
+El informe de ingresos y cantidad de suscripciones por plan está en
+`GET /admin/reportes/ingresos-por-plan`; recibe fechas inclusivas y el servicio
+convierte la fecha final al límite exclusivo del día siguiente antes de consultar
+Oracle con `NamedParameterJdbcTemplate`. La ruta anterior
+`GET /reportes/ingresos-por-plan` solo redirige al destino protegido.
+
+Su exportación CSV está en `GET /admin/reportes/ingresos-por-plan.csv` y exige
+los mismos parámetros `desde` y `hasta` que la pantalla. La descarga conserva
+ese rango y agrega una fila de totales.
 
 El informe de consumo está en `GET /admin/reportes/consumo-por-plan` y requiere
 un administrador autenticado. Filtra sesiones MongoDB por `startedAt` en el
@@ -17,7 +24,8 @@ en una fila identificada como `Sin plan histórico`.
 
 La descarga CSV está en `GET /admin/reportes/consumo-por-plan.csv` y recibe los
 mismos parámetros `desde` y `hasta`. La página y la descarga usan el mismo servicio
-de agregación y validación del rango.
+de agregación y validación del rango. Ambas rutas de informe y sus exportaciones
+están dentro del espacio `/admin/**`, protegido por la cadena administrativa.
 
 La consulta SQL ejecutable directamente en Oracle está en
 `database/oracle/06_report_ingresos_y_suscripciones_por_plan.sql`.

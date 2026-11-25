@@ -1,50 +1,55 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ingresos por plan | CineConecta</title>
-  <link rel="stylesheet" th:href="@{/css/site.css}">
-</head>
-<body>
-  <main>
-    <p><a th:href="@{/}">Volver al inicio</a></p>
+<head th:replace="~{catalog/fragments :: head('Ingresos y suscripciones por plan')}"></head>
+<body class="catalog-ui">
+  <header th:replace="~{catalog/fragments :: header(true)}"></header>
+  <main class="catalog-main">
+    <nav class="catalog-actions" aria-label="Navegación administrativa">
+      <a th:href="@{/admin/reportes}">Informes y exportaciones</a>
+      <a th:href="@{/admin/contents}">Administrar catálogo</a>
+      <form method="post" th:action="@{/admin/logout}"><button type="submit">Cerrar sesión</button></form>
+    </nav>
     <h1>Ingresos y suscripciones por plan</h1>
     <p>El informe suma los pagos recibidos y cuenta las suscripciones iniciadas entre las fechas seleccionadas.</p>
 
-    <form method="get" th:action="@{/reportes/ingresos-por-plan}">
-      <p>
-        <label for="desde">Desde</label>
+    <form class="catalog-filters" method="get" th:action="@{/admin/reportes/ingresos-por-plan}">
+      <label for="desde">Desde
         <input id="desde" name="desde" type="date" th:value="${desde}" required>
-      </p>
-      <p>
-        <label for="hasta">Hasta (incluida)</label>
+      </label>
+      <label for="hasta">Hasta (incluida)
         <input id="hasta" name="hasta" type="date" th:value="${hasta}" required>
-      </p>
-      <button type="submit">Generar informe</button>
+      </label>
+      <button class="catalog-primary" type="submit">Generar informe</button>
     </form>
 
-    <p role="alert" th:if="${error}" th:text="${error}"></p>
+    <p class="catalog-panel" role="alert" th:if="${error}" th:text="${error}"></p>
 
     <section th:if="${resultados != null}">
-      <h2>Resultados</h2>
-      <p th:if="${#lists.isEmpty(resultados)}">No hay planes registrados.</p>
-      <table th:unless="${#lists.isEmpty(resultados)}">
-        <thead>
-          <tr>
-            <th scope="col">Plan</th>
-            <th scope="col">Ingresos</th>
-            <th scope="col">Suscripciones iniciadas</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="fila : ${resultados}">
-            <td th:text="${fila.nombrePlan}"></td>
-            <td th:text="${fila.ingresos}"></td>
-            <td th:text="${fila.cantidadSuscripciones}"></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="catalog-panel catalog-actions">
+        <h2>Resultados</h2>
+        <a class="catalog-primary"
+           th:href="@{/admin/reportes/ingresos-por-plan.csv(desde=${desde},hasta=${hasta})}">Descargar CSV</a>
+      </div>
+      <p class="catalog-panel" th:if="${#lists.isEmpty(resultados)}">No hay planes registrados para el informe.</p>
+      <div class="catalog-table" th:unless="${#lists.isEmpty(resultados)}">
+        <table>
+          <caption th:text="|Ingresos y suscripciones desde ${desde} hasta ${hasta}|"></caption>
+          <thead>
+            <tr>
+              <th scope="col">Plan</th>
+              <th scope="col">Ingresos</th>
+              <th scope="col">Suscripciones iniciadas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="fila : ${resultados}">
+              <th scope="row" th:text="${fila.nombrePlan}"></th>
+              <td th:text="${fila.ingresos}"></td>
+              <td th:text="${fila.cantidadSuscripciones}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
   </main>
 </body>

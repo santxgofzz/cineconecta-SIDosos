@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{catalog/fragments :: head('Informes y exportaciones')}"></head>
+<body class="catalog-ui">
+<header th:replace="~{catalog/fragments :: header(true)}"></header>
+<main class="catalog-main">
+  <nav class="catalog-actions" aria-label="Navegación administrativa">
+    <a th:href="@{/admin/contents}">Administrar catálogo</a>
+    <form method="post" th:action="@{/admin/logout}"><button type="submit">Cerrar sesión</button></form>
+  </nav>
+  <h1>Informes y exportaciones</h1>
+  <p>Elige un informe, aplica el rango de fechas y descarga el resultado CSV desde su pantalla.</p>
+
+  <ul class="catalog-report-list">
+    <li>
+      <h2>Ingresos y suscripciones por plan</h2>
+      <p>Suma los pagos recibidos y cuenta las suscripciones iniciadas en el periodo seleccionado.</p>
+      <a class="catalog-primary" th:href="@{/admin/reportes/ingresos-por-plan}">Abrir informe</a>
+    </li>
+    <li>
+      <h2>Consumo por plan histórico</h2>
+      <p>Agrupa las sesiones de reproducción por tipo de contenido y plan histórico de la suscripción.</p>
+      <a class="catalog-primary" th:href="@{/admin/reportes/consumo-por-plan}">Abrir informe</a>
+    </li>
+  </ul>
+</main>
+</body>
+</html>

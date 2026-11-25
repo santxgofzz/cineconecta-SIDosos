@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-11-24T17:45:17.470Z",
         "reason": "Agent verified the template loads site.css: body is 1rem, h2 is 1.5rem, and h1 is clamp(2rem, 1.5rem + 1.5vw, 2.5rem); detector falsely treats external CSS roles as 16px."
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "src/main/resources/templates/admin/reportes.html"
+        ],
+        "createdAt": "2026-11-25T14:37:44.660Z",
+        "reason": "Agent verified the fragment loads site.css and catalog.css: body 1rem, h2 1.35rem, h1 clamp(2rem, 4vw, 3.5rem); detector does not resolve the linked stylesheets."
       }
     ]
   }

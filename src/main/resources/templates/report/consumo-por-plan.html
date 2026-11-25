@@ -5,6 +5,7 @@
 <header th:replace="~{catalog/fragments :: header(true)}"></header>
 <main class="catalog-main">
   <nav class="catalog-actions" aria-label="Navegación administrativa">
+    <a th:href="@{/admin/reportes}">Informes y exportaciones</a>
     <a th:href="@{/admin/contents}">Administrar catálogo</a>
     <form method="post" th:action="@{/admin/logout}"><button type="submit">Cerrar sesión</button></form>
   </nav>
