@@ -1,5 +1,8 @@
 # Benchmark relacional y MongoDB
 
+El informe con consultas, evidencia de planes, mediciones y reflexión sobre el
+uso de IA está en [`informe-benchmark.md`](informe-benchmark.md).
+
 La aplicación usa Oracle para el modelo relacional. Este benchmark es una
 comparación aislada en **PostgreSQL y MongoDB**; no cambia la configuración ni
 las consultas operativas de la aplicación. El modelo PostgreSQL replica las
