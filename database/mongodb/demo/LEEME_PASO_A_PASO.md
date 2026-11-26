@@ -59,9 +59,9 @@ Esta opción crea y llena documentos. **No instala los validadores ni los índic
 
 **Nota:** Compass infiere relaciones de forma heurística y puede omitir alguna. Las relaciones del diagrama no son claves foráneas que MongoDB aplique automáticamente.
 
-## Datos de prueba: IDs de Oracle ficticios
+## Datos de prueba: IDs de Oracle de la demo
 
-Los `profileId` 15, 16 y 21 y `subscriptionId` 8, 9 y 10 son referencias **simuladas**. No se ha comprobado que existan en Oracle. Cuando implementen la integración deberán crear registros reales en Oracle y ajustar referencias.
+Los `profileId` 15, 16 y 21 y `subscriptionId` 8, 9 y 10 son referencias sinteticas. `database/oracle/03_seed.sql` crea los registros Oracle correspondientes y sus fechas cubren las sesiones de noviembre de este fixture. Ejecuta esa semilla en un esquema Oracle vacio/de prueba si quieres que las referencias coincidan entre ambos almacenes. Este script Mongo sigue apuntando a `cineconecta_modelo_demo` y no valida que la semilla se haya ejecutado en tu Oracle.
 
 `admin_users` contiene una cuenta de demostración **desactivada** con un marcador de hash NO válido. No permite autenticarse. En el backend real creen un hash seguro y mantengan cuentas admin independientes.
 

@@ -1,4 +1,26 @@
-body { font-family: system-ui, sans-serif; color: #232323; margin: 2rem; }
+:root {
+  --font-body: 1rem;
+  --font-section-title: 1.5rem;
+  --font-page-title: clamp(2rem, calc(1.5rem + 1.5vw), 2.5rem);
+}
+
+body {
+  font: 400 var(--font-body)/1.6 system-ui, sans-serif;
+  color: #232323;
+  margin: 2rem;
+}
+
+h1 {
+  font-size: var(--font-page-title);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--font-section-title);
+  line-height: 1.25;
+}
+
 main { max-width: 800px; margin: 4rem auto; }
 
 /* Reproductor simulado y actividad */

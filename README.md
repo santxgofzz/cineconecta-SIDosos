@@ -15,9 +15,9 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
 
 - `docs/`: enunciado, rúbrica, MR, modelo documental y diagrama Mongo.
 - `database/mongodb/demo/`: scripts **originales**, validadores, índices y JSON
-  enviados por el equipo; usan `cineconecta_modelo_demo` con IDs SQL ficticios.
+  enviados por el equipo; usan `cineconecta_modelo_demo` con IDs SQL de prueba.
 - `database/mongodb/runtime/`: tareas para crear BD real `cineconecta`.
-- `database/oracle/`: plan de scripts SQL todavía no implementados.
+- `database/oracle/`: esquema (`01_schema.sql`), datos sinteticos (`03_seed.sql`) e informe SQL de ingresos y suscripciones por plan; faltan restricciones adicionales e índices.
 - `src/`: base mínima de Spring Boot y un ejemplo unitario de vigencia de suscripción.
 
 ## Primeros pasos
@@ -26,11 +26,14 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
    o al servidor Oracle autorizado por el curso.
 2. (Opcional) Levantar Mongo local con `docker compose up -d mongodb`.
 3. Configurar en el sistema/IDE las variables del archivo `.env.example`.
-   **Spring no lee `.env` automáticamente.**
-4. Crear el esquema Oracle con los scripts del equipo (PENDIENTES).
+   **Spring no lee `.env` automáticamente:** hay que definir las variables en
+   el entorno o en la configuración de ejecución del IDE.
+4. En SQL Developer, conecta al esquema de prueba y ejecuta con **Run Script
+   (F5)** `database/oracle/01_schema.sql`; después, ejecuta una sola vez
+   `database/oracle/03_seed.sql` en ese esquema.
 5. Preparar MongoDB con los [scripts runtime](database/mongodb/runtime/README.md).
-   Alinear las referencias de actividad con Oracle antes de cargar esos datos.
-   Mantener la demo en su base propia.
+   Las referencias de actividad deben coincidir con Oracle antes de cargarlas.
+   Mantén la demo en su base propia.
 6. En la raíz del repo: `mvn test`, `mvn spring-boot:run`.
 7. Acceder a `http://localhost:8080/`. La app necesita conexiones Oracle y
    Mongo válidas para arrancar, aun cuando la página inicial sea básica.
@@ -67,7 +70,8 @@ admin de demo no permite iniciar sesión. No cargarla en la base productiva.
 - `integration`: reglas que requieren consultar ambos motores.
 - `common`: errores, respuestas y validaciones compartidas.
 
-Los módulos contienen marcadores README, NO controladores/servicios completos.
+Los módulos están en construcción; el informe de ingresos por plan ya cuenta
+con controlador, servicio y repositorio Spring Boot.
 
 ## Flujo de trabajo Git
 

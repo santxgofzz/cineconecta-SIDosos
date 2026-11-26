@@ -43,7 +43,7 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/error",
-                                "/login", "/register").permitAll()
+                                "/login", "/register", "/reportes/ingresos-por-plan").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form

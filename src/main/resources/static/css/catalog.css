@@ -67,6 +67,11 @@
 .catalog-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; }
 .catalog-pagination { margin-block: 1.2rem; }
 .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr)); gap: 1rem; padding: 0; list-style: none; }
+.catalog-report-list { list-style: none; padding: 0; margin-block: 1.5rem; }
+.catalog-report-list li { padding-block: 1.25rem; border-bottom: 1px solid var(--edge); }
+.catalog-report-list li:first-child { border-top: 1px solid var(--edge); }
+.catalog-report-list h2 { margin: 0 0 .45rem; }
+.catalog-report-list p { max-width: 65ch; margin: 0 0 .9rem; color: var(--quiet); }
 .catalog-card { overflow: hidden; }
 .catalog-card > a { display: block; color: inherit; text-decoration: none; height: 100%; }
 .catalog-card > a:focus-visible { outline-offset: -3px; }
