@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JdbcAccountDataGatewayTest {
     @ParameterizedTest
-    @CsvSource(value = {"A,true", "I,false", "1,true", "Y,true", "s,true", "T,true", "0,false", "N,false", "NULL,false"},
+    @CsvSource(value = {"A,true", "a,true", "I,false", "1,true", "Y,true", "s,true", "T,true", "0,false", "N,false", "NULL,false"},
             nullValues = "NULL")
     void parsesActiveFlag(String raw, boolean expected) {
         assertEquals(expected, JdbcAccountDataGateway.isActive(raw));

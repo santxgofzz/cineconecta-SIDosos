@@ -31,9 +31,10 @@ Páginas: `/profiles/{profileId}/player?contentId=…&episodeId=…` y `/profile
 
 ## Supuestos a alinear con el equipo
 
-- `JdbcAccountDataGateway` usa `PROFILES(PROFILE_ID, ACCOUNT_ID, MAX_AGE_RATING, IS_ACTIVE)` y
-  `SUBSCRIPTIONS(SUBSCRIPTION_ID, ACCOUNT_ID, STARTS_AT, ENDS_AT)`. Si `01_schema.sql` usa otros
-  nombres, solo se cambian esas dos sentencias.
+- `JdbcAccountDataGateway` usa `PROFILES(PROFILEID, ACCOUNTS_ACCOUNTID, MAXAGERATING, ISACTIVE)` y
+  `SUBSCRIPTIONS(SUBSCRIPTIONID, ACCOUNTS_ACCOUNTID, STARTSAT, ENDSAT)`, según
+  `database/oracle/01_schema.sql`. Un perfil está activo con `ISACTIVE = 'A'`
+  (`DM_PROFILE_STATES`). Si el esquema cambia, solo se ajustan esas dos sentencias.
 - La autenticación real de titulares debe devolver un principal que implemente
   `common.security.AccountPrincipal`. Mientras tanto existe `DevAccountUserConfig` (solo perfil `dev`).
 - El catálogo se lee por proyección de `contents` (`MongoCatalogGateway`); no se definió un documento
