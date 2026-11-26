@@ -47,10 +47,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
+                        .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .successHandler((request, response, authentication) -> {
                             if (wantsHtml(request)) {
-                                redirect.sendRedirect(request, response, "/");
+                                redirect.sendRedirect(request, response, "/profiles");
                             } else {
                                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                             }

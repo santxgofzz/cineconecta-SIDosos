@@ -1,16 +1,25 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CineConecta</title>
-  <link rel="stylesheet" th:href="@{/css/site.css}">
-</head>
-<body>
-  <main>
-    <h1>CineConecta</h1>
-    <p>Base inicial de Spring Boot para el proyecto de Sistemas Intensivos en Datos II.</p>
-    <p><a th:href="@{/admin/login}">Administración del catálogo</a></p>
-  </main>
+<head th:replace="~{catalog/fragments :: head('Inicio')}"></head>
+<body class="catalog-ui">
+<header th:replace="~{catalog/fragments :: header(false)}"></header>
+<main class="catalog-main">
+  <h1>CineConecta</h1>
+  <p class="catalog-muted">Plataforma de streaming con persistencia políglota Oracle y MongoDB.</p>
+  <section class="catalog-panel">
+    <h2>Acceso de titulares</h2>
+    <div class="catalog-actions">
+      <a class="catalog-primary" th:href="@{/login}">Iniciar sesión</a>
+      <a th:href="@{/register}">Crear cuenta</a>
+      <a th:href="@{/profiles}">Seleccionar perfil</a>
+    </div>
+  </section>
+  <section class="catalog-panel">
+    <h2>Gestión</h2>
+    <div class="catalog-actions">
+      <a th:href="@{/admin/login}">Administración del catálogo</a>
+    </div>
+  </section>
+</main>
 </body>
 </html>
