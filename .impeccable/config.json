@@ -20,6 +20,15 @@
         ],
         "createdAt": "2026-11-25T14:37:44.660Z",
         "reason": "Agent verified the fragment loads site.css and catalog.css: body 1rem, h2 1.35rem, h1 clamp(2rem, 4vw, 3.5rem); detector does not resolve the linked stylesheets."
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "src/main/resources/templates/index.html"
+        ],
+        "createdAt": "2026-11-26T03:44:46.375Z",
+        "reason": "Codex review: external catalog.css sets h1 to clamp(2rem,4vw,3.5rem), h2 to 1.35rem, and site.css body to 1rem; detector reports all three as 16px because it does not resolve the stylesheet."
       }
     ]
   }
