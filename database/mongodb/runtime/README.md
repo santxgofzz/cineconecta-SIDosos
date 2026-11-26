@@ -1,4 +1,4 @@
-﻿# MongoDB de la aplicación (`cineconecta`)
+# MongoDB de la aplicación (`cineconecta`)
 
 ## Hecho
 
@@ -27,6 +27,39 @@ docker exec cineconecta-mongodb mongosh "mongodb://localhost:27017/cineconecta" 
 
 Usa el periodo `2026-11-01` a `2026-12-01` en
 `/admin/reportes/consumo-por-plan` para incluir las sesiones de ejemplo.
+
+- `05_verificar_playback_activity.js`: verificación **de solo lectura** de `01_playback_activity.js`.
+  Comprueba validadores e índices, que las consultas del backend (Mi lista, Continuar
+  viendo, historial, sesiones abiertas, informes por periodo) usen su índice sin
+  `COLLSCAN` ni `SORT` en memoria, y avisa de datos inconsistentes (progreso ≥ 90 %
+  sin completar, progreso huérfano, sesiones cerradas a medias). Sale con código 1 si
+  algo falla; su salida sirve como evidencia para `docs/evidencias/`.
+
+```powershell
+mongosh "mongodb://localhost:27017" --file database/mongodb/runtime/05_verificar_playback_activity.js
+# con un perfil concreto para los planes de consulta:
+mongosh "mongodb://localhost:27017" --eval "var profileId = 7" --file database/mongodb/runtime/05_verificar_playback_activity.js
+```
+
+- `06_benchmark_playback_activity.js`: compara Continuar viendo, historial y el informe de
+  consumo por periodo **antes y después** de crear su índice, con 200 000 sesiones y 80 000 progresos
+  generados en la base aislada `cineconecta_benchmark` (se borra al terminar). Resultados en
+  `docs/evidencias/reproduccion-actividad.md`.
+
+```powershell
+mongosh "mongodb://localhost:27017" --file database/mongodb/runtime/06_benchmark_playback_activity.js
+```
+
+- `07_seed_activity_dev.js`: datos de actividad de desarrollo (10 sesiones, 9 progresos y
+  6 elementos de Mi lista) para los perfiles 15, 16 y 21 y las suscripciones 8, 9 y 10 de
+  `database/oracle/03_seed.sql`. Cubre películas, series por episodio, documentales,
+  sesiones pausadas y finalizadas, progreso completado y un título retirado. Se ejecuta
+  después de `01`, `02` y `03`; no sobrescribe documentos existentes y se puede repetir.
+
+```powershell
+$env:CINE_MONGO_TARGET_DB = "cineconecta"
+mongosh "mongodb://localhost:27017/cineconecta" --file database/mongodb/runtime/07_seed_activity_dev.js
+```
 
 ## Catálogo y administradores
 
