@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{catalog/fragments :: head('Iniciar sesión')}"></head>
+<body class="catalog-ui">
+<header th:replace="~{catalog/fragments :: header(false)}"></header>
+<main class="catalog-main catalog-login">
+  <h1>Iniciar sesión</h1>
+  <p th:if="${param.error}" role="alert">No se pudo iniciar sesión. Verifica tu correo y contraseña.</p>
+  <p th:if="${param.logout}" role="status">Sesión cerrada.</p>
+  <p th:if="${param.registered}" role="status">Cuenta creada correctamente. Ya puedes iniciar sesión.</p>
+  <form class="catalog-panel catalog-form" method="post" th:action="@{/login}">
+    <fieldset>
+      <legend>Cuenta de titular</legend>
+      <label>Correo electrónico
+        <input type="email" name="username" autocomplete="username" required maxlength="254">
+      </label>
+      <label>Contraseña
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+      <div class="catalog-actions">
+        <button type="submit" class="catalog-primary">Entrar</button>
+        <a th:href="@{/register}">Crear cuenta</a>
+      </div>
+    </fieldset>
+  </form>
+  <div class="catalog-actions">
+    <a th:href="@{/}">Volver a CineConecta</a>
+    <a th:href="@{/admin/login}">Acceso administrativo</a>
+  </div>
+</main>
+</body>
+</html>

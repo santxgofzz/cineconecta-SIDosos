@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{catalog/fragments :: head('Crear cuenta')}"></head>
+<body class="catalog-ui">
+<header th:replace="~{catalog/fragments :: header(false)}"></header>
+<main class="catalog-main catalog-login">
+  <h1>Crear cuenta</h1>
+  <p th:if="${errorMessage}" role="alert" th:text="${errorMessage}"></p>
+  <form class="catalog-panel catalog-form" method="post" th:action="@{/register}">
+    <fieldset>
+      <legend>Datos del titular</legend>
+      <label>Nombre completo
+        <input type="text" name="fullName" autocomplete="name" required maxlength="150" th:value="${fullName}">
+      </label>
+      <label>Correo electrónico
+        <input type="email" name="email" autocomplete="email" required maxlength="254" th:value="${email}">
+      </label>
+      <label>Contraseña
+        <input type="password" name="password" autocomplete="new-password" required minlength="8" maxlength="72">
+      </label>
+      <label>Confirmar contraseña
+        <input type="password" name="confirmPassword" autocomplete="new-password" required minlength="8" maxlength="72">
+      </label>
+      <div class="catalog-actions">
+        <button type="submit" class="catalog-primary">Registrarme</button>
+        <a th:href="@{/login}">Ya tengo cuenta</a>
+      </div>
+    </fieldset>
+  </form>
+  <a th:href="@{/}">Volver a CineConecta</a>
+</main>
+</body>
+</html>

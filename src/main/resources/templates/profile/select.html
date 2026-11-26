@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{catalog/fragments :: head('Seleccionar perfil')}"></head>
+<body class="catalog-ui">
+<header th:replace="~{catalog/fragments :: header(false)}"></header>
+<main class="catalog-main">
+  <h1>¿Quién está viendo?</h1>
+  <div class="catalog-actions">
+    <a class="catalog-primary" th:href="@{/profiles/manage}">Administrar perfiles</a>
+    <form method="post" th:action="@{/logout}">
+      <button type="submit">Cerrar sesión</button>
+    </form>
+  </div>
+  <section class="catalog-panel" th:if="${activeProfiles.empty}">
+    <p>Tu cuenta no tiene perfiles activos en este momento.</p>
+    <p><a class="catalog-primary" th:href="@{/profiles/manage}">Crear o reactivar un perfil</a></p>
+  </section>
+  <ul class="catalog-grid" th:unless="${activeProfiles.empty}">
+    <li class="catalog-card" th:each="profile : ${activeProfiles}">
+      <div class="catalog-card-info">
+        <h2 th:text="${profile.name}"></h2>
+        <p th:text="|${profile.maxAgeRating}+ · ${profile.ageRatingLabel}|"></p>
+        <div class="catalog-actions">
+          <a class="catalog-primary" th:href="@{/profiles/{profileId}/catalog(profileId=${profile.profileId})}">Ver catálogo</a>
+          <a th:href="@{/profiles/{profileId}/activity(profileId=${profile.profileId})}">Mi actividad</a>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <p class="catalog-muted" th:if="${hasInactiveProfiles}">
+    Los perfiles desactivados no aparecen aquí; puedes reactivarlos desde
+    <a th:href="@{/profiles/manage}">Administrar perfiles</a>.
+  </p>
+</main>
+</body>
+</html>

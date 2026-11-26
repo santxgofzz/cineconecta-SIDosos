@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{catalog/fragments :: head('Administrar perfiles')}"></head>
+<body class="catalog-ui">
+<header th:replace="~{catalog/fragments :: header(false)}"></header>
+<main class="catalog-main">
+  <h1>Administrar perfiles</h1>
+  <div class="catalog-actions">
+    <a th:href="@{/profiles}">Volver a selección de perfiles</a>
+    <form method="post" th:action="@{/logout}">
+      <button type="submit">Cerrar sesión</button>
+    </form>
+  </div>
+  <p th:if="${successMessage}" role="status" th:text="${successMessage}"></p>
+  <p th:if="${errorMessage}" role="alert" th:text="${errorMessage}"></p>
+
+  <form class="catalog-panel catalog-form" method="post" th:action="@{/profiles/manage}">
+    <fieldset>
+      <legend>Nuevo perfil</legend>
+      <label>Nombre del perfil
+        <input type="text" name="name" required maxlength="60" placeholder="Ej. Infantil">
+      </label>
+      <label>Clasificación máxima de edad
+        <select name="maxAgeRating" required>
+          <option value="" disabled selected>Selecciona una clasificación</option>
+          <option th:each="rating : ${ageRatings}"
+                  th:value="${rating.ageValue}"
+                  th:text="|${rating.ageValue}+ · ${rating.label}|"></option>
+        </select>
+      </label>
+      <div class="catalog-actions">
+        <button type="submit" class="catalog-primary">Crear perfil</button>
+      </div>
+    </fieldset>
+  </form>
+
+  <section class="catalog-panel">
+    <h2>Perfiles de la cuenta</h2>
+    <p class="catalog-muted" th:if="${profiles.empty}">Aún no hay perfiles registrados para esta cuenta.</p>
+    <div th:unless="${profiles.empty}">
+      <article class="catalog-row" th:each="profile : ${profiles}">
+        <div class="catalog-actions">
+          <strong th:text="${profile.name}"></strong>
+          <span class="catalog-state" th:text="${profile.active ? 'Activo' : 'Inactivo'}"></span>
+          <span class="catalog-muted" th:text="|${profile.maxAgeRating}+ · ${profile.ageRatingLabel}|"></span>
+        </div>
+
+        <form class="catalog-filters" method="post" th:action="@{/profiles/manage/{id}/edit(id=${profile.profileId})}">
+          <label>Nombre
+            <input type="text" name="name" required maxlength="60" th:value="${profile.name}">
+          </label>
+          <label>Clasificación máxima
+            <select name="maxAgeRating" required>
+              <option th:each="rating : ${ageRatings}"
+                      th:value="${rating.ageValue}"
+                      th:selected="${rating.ageValue == profile.maxAgeRating}"
+                      th:text="|${rating.ageValue}+ · ${rating.label}|"></option>
+            </select>
+          </label>
+          <div class="catalog-actions">
+            <button type="submit">Guardar cambios</button>
+          </div>
+        </form>
+
+        <div class="catalog-actions">
+          <form th:if="${profile.active}" method="post"
+                th:action="@{/profiles/manage/{id}/deactivate(id=${profile.profileId})}">
+            <button type="submit">Desactivar</button>
+          </form>
+          <form th:unless="${profile.active}" method="post"
+                th:action="@{/profiles/manage/{id}/reactivate(id=${profile.profileId})}">
+            <button type="submit" class="catalog-primary">Reactivar</button>
+          </form>
+          <a th:if="${profile.active}"
+             th:href="@{/profiles/{profileId}/catalog(profileId=${profile.profileId})}">Entrar al catálogo</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

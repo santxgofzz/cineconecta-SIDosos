@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>No se pudo completar la solicitud · CineConecta</title>
+  <link rel="stylesheet" th:href="@{/css/billing.css}">
+</head>
+<body class="billing-body">
+<header class="billing-topbar"><a class="billing-brand" th:href="@{/}">Cine<span>Conecta</span></a></header>
+<main class="billing-shell billing-error-page">
+  <span class="billing-kicker">SUSCRIPCIONES</span>
+  <h1>No se pudo completar la solicitud</h1>
+  <p role="alert" th:text="${message}">Ocurrió un error al consultar tus datos.</p>
+  <a class="billing-primary billing-button-link" th:href="@{/subscriptions}">Volver a los planes</a>
+</main>
+</body>
+</html>

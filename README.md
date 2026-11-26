@@ -28,11 +28,20 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
 3. Configurar en el sistema/IDE las variables del archivo `.env.example`.
    **Spring no lee `.env` automáticamente.**
 4. Crear el esquema Oracle con los scripts del equipo (PENDIENTES).
-5. Adaptar y ejecutar `database/mongodb/runtime/` una vez estén alineados los IDs
-   con Oracle. NO usar la demo como BD real.
+5. Preparar MongoDB con los [scripts runtime](database/mongodb/runtime/README.md).
+   Alinear las referencias de actividad con Oracle antes de cargar esos datos.
+   Mantener la demo en su base propia.
 6. En la raíz del repo: `mvn test`, `mvn spring-boot:run`.
 7. Acceder a `http://localhost:8080/`. La app necesita conexiones Oracle y
    Mongo válidas para arrancar, aun cuando la página inicial sea básica.
+
+### Catálogo y administración
+
+- `/admin/login` abre el acceso administrativo independiente de MongoDB.
+- `/profiles/{profileId}/catalog` exige la sesión del titular, el perfil
+  propio activo y una suscripción vigente.
+- Consulta el [modelo y decisiones MongoDB](docs/modelos/catalogo-mongodb.md)
+  y las [pruebas del módulo](docs/pruebas/catalogo-mongodb.md).
 
 ### Solo demostrar el Mongo del diseño
 
@@ -81,10 +90,10 @@ obligatorios están en `docs/pruebas/plan.md`.
 
 ## Seguridad
 
-No incluir credenciales en Git. El archivo SecurityConfig es **temporal**;
-antes de la entrega deben implementar autenticación real para titulares de
-Oracle y administradores independientes en MongoDB, y comprobar permisos de
-cada operación en servidor.
+No incluir credenciales en Git. La cadena general de `SecurityConfig`
+mantiene pendiente la integración con la autenticación de titulares Oracle.
+`AdminSecurityConfig` usa el acceso MongoDB independiente, con BCrypt,
+roles y CSRF para las operaciones de administración.
 
 ## Limitaciones de este ZIP
 

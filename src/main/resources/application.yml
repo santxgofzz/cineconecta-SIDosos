@@ -6,6 +6,14 @@ spring:
     username: ${ORACLE_USERNAME}
     password: ${ORACLE_PASSWORD}
     driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: ${ORACLE_CONNECTION_TIMEOUT_MS:3000}
+      data-source-properties:
+        oracle.net.CONNECT_TIMEOUT: ${ORACLE_CONNECT_TIMEOUT_MS:3000}
+        oracle.jdbc.ReadTimeout: ${ORACLE_READ_TIMEOUT_MS:5000}
+  jdbc:
+    template:
+      query-timeout: 5s
   jpa:
     hibernate:
       ddl-auto: validate
