@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planes y suscripciones · CineConecta</title>
+  <link rel="stylesheet" th:href="@{/css/billing.css}">
+</head>
+<body class="billing-body">
+<header class="billing-topbar">
+  <a class="billing-brand" th:href="@{/}">Cine<span>Conecta</span></a>
+  <nav aria-label="Navegación principal">
+    <a th:href="@{/}">Inicio</a>
+    <a href="#planes">Planes</a>
+    <a href="#historial">Mi historial</a>
+  </nav>
+</header>
+
+<main class="billing-shell">
+  <section class="billing-intro" aria-labelledby="title">
+    <span class="billing-kicker">GESTIÓN DE SUSCRIPCIONES</span>
+    <h1 id="title">Elige cómo quieres disfrutar CineConecta</h1>
+    <p>Contrata un plan por 30 días y administra tus pagos simulados. El precio y los cupos los define Oracle.</p>
+  </section>
+
+  <div class="billing-alert billing-success" role="status" th:if="${notice}" th:text="${notice}">Compra confirmada</div>
+  <div class="billing-alert billing-error" role="alert" th:if="${error}" th:text="${error}">No se pudo completar la compra</div>
+
+  <section class="billing-receipt" th:if="${receipt}" aria-labelledby="receipt-title">
+    <div>
+      <span class="billing-kicker">COMPROBANTE</span>
+      <h2 id="receipt-title">Suscripción confirmada</h2>
+      <p>Referencia de pago: <strong th:text="${receipt.paymentReference}">SIM-123</strong></p>
+      <p>Suscripción <strong th:text="|#${receipt.subscriptionId}|"></strong> ·
+         <span th:text="${receipt.planName}"></span> ·
+         <span th:text="|${receipt.paidAmount} COP|"></span></p>
+      <small>Vigencia en UTC: <span th:text="${receipt.startsAt}"></span> — <span th:text="${receipt.endsAt}"></span></small>
+    </div>
+    <a class="billing-link" href="#historial">Ver historial</a>
+  </section>
+
+  <section class="billing-current" th:if="${activeSubscription}" aria-labelledby="current-title">
+    <div>
+      <span class="billing-kicker">PLAN ACTUAL</span>
+      <h2 id="current-title" th:text="${activeSubscription.planName}">Plan vigente</h2>
+      <p>Tu suscripción está activa. Para contratar otra, primero debe finalizar este período.</p>
+      <small>Hasta (UTC): <span th:text="${activeSubscription.endsAt}"></span></small>
+    </div>
+    <span class="billing-pill">Vigente</span>
+  </section>
+
+  <section id="planes" aria-labelledby="plans-title">
+    <div class="billing-section-title">
+      <div><span class="billing-kicker">CATÁLOGO DE PLANES</span><h2 id="plans-title">Planes disponibles</h2></div>
+      <a class="billing-link" href="#historial">Revisar mis compras</a>
+    </div>
+    <p class="billing-empty" th:if="${#lists.isEmpty(plans)}">Todavía no hay planes registrados en Oracle.</p>
+    <ul class="billing-plans" th:unless="${#lists.isEmpty(plans)}">
+      <li class="billing-card" th:each="plan : ${plans}">
+        <span class="billing-plan-tag">30 días</span>
+        <h3 th:text="${plan.name}">Plan Básico</h3>
+        <p class="billing-price"><strong th:text="${plan.price}">23000.00</strong><span> COP / 30 días</span></p>
+        <p class="billing-detail"><strong th:text="${plan.maxProfiles}">2</strong> perfiles activos como máximo</p>
+        <form method="post" th:action="@{/subscriptions/purchase}">
+          <input type="hidden" name="planId" th:value="${plan.planId}">
+          <div class="billing-actions" th:if="${activeSubscription == null}">
+            <button class="billing-primary" type="submit" name="approvePayment" value="true">Contratar plan</button>
+            <button class="billing-secondary" type="submit" name="approvePayment" value="false">Simular rechazo</button>
+          </div>
+          <p class="billing-locked" th:unless="${activeSubscription == null}">Ya tienes una suscripción vigente</p>
+        </form>
+      </li>
+    </ul>
+    <p class="billing-hint">El pago es simulado. No se usa ninguna tarjeta ni se realizan cobros reales.</p>
+  </section>
+
+  <section id="historial" aria-labelledby="history-title">
+    <div class="billing-section-title"><div><span class="billing-kicker">MOVIMIENTOS</span><h2 id="history-title">Historial de suscripciones</h2></div></div>
+    <p class="billing-empty" th:if="${#lists.isEmpty(history)}">Aún no tienes suscripciones registradas.</p>
+    <div class="billing-table-scroll" th:unless="${#lists.isEmpty(history)}">
+      <table>
+        <caption>Historial de planes y pagos aprobados de tu cuenta</caption>
+        <thead><tr><th scope="col">Plan</th><th scope="col">Vigencia (UTC)</th><th scope="col">Pago</th><th scope="col">Estado</th></tr></thead>
+        <tbody>
+          <tr th:each="row : ${history}">
+            <th scope="row"><span th:text="${row.planName}">Plan</span><small th:text="|Suscripción #${row.subscriptionId}|"></small></th>
+            <td><time th:text="${row.startsAt}"></time><small>hasta</small><time th:text="${row.endsAt}"></time></td>
+            <td><strong th:text="|${row.paidAmount} COP|"></strong><small th:text="${row.paymentReference}">SIM-123</small></td>
+            <td><span class="billing-pill" th:classappend="${row.active} ? ' billing-live' : ' billing-expired'" th:text="${row.active} ? 'Vigente' : 'Finalizada'"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<footer class="billing-footer">CineConecta · Proyecto SID II · Pagos de demostración</footer>
+</body>
+</html>

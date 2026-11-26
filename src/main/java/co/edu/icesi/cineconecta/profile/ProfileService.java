@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ProfileService {
+    public record AgeRatingOption(int ageValue, String label) {}
+
     private final AccountRepository accounts;
     private final ProfileRepository profiles;
     private final SubscriptionRepository subscriptions;
@@ -47,6 +49,13 @@ public class ProfileService {
         this.plans = plans;
         this.ageRatings = ageRatings;
         this.clock = clock;
+    }
+
+    @Transactional(readOnly = true)
+    public List<AgeRatingOption> listAgeRatings() {
+        return ageRatings.findAllByOrderByAgeValueAsc().stream()
+                .map(r -> new AgeRatingOption(r.getAgeValue(), r.getLabel()))
+                .toList();
     }
 
     @Transactional(readOnly = true)

@@ -6,8 +6,6 @@
 - Límites: código no probado, referencias Oracle ficticias, riesgos de seguridad.
 - Qué decisiones puede explicar individualmente cada integrante.
 
-Agregar ejemplos reales y responsabilidad de revisión. No declarar pruebas
-que no se hayan realizado.
 
 ## Catálogo y administración
 
