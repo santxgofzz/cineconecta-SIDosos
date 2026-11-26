@@ -12,6 +12,22 @@
 mongosh "mongodb://localhost:27017" --file database/mongodb/runtime/01_playback_activity.js
 ```
 
+Para probar el informe de consumo con las suscripciones de
+`database/oracle/03_seed.sql`, el fixture local
+`05_seed_consumption_demo.js` agrega diez sesiones a `cineconecta`. Inserta
+solo IDs de sesión que falten; no reemplaza ni elimina documentos.
+
+Si `mongosh` no está instalado en Windows, ejecuta el fixture desde el
+contenedor Mongo local:
+
+```powershell
+docker cp .\database\mongodb\runtime\05_seed_consumption_demo.js cineconecta-mongodb:/tmp/05_seed_consumption_demo.js
+docker exec cineconecta-mongodb mongosh "mongodb://localhost:27017/cineconecta" --file /tmp/05_seed_consumption_demo.js
+```
+
+Usa el periodo `2026-11-01` a `2026-12-01` en
+`/admin/reportes/consumo-por-plan` para incluir las sesiones de ejemplo.
+
 - `05_verificar_playback_activity.js`: verificación **de solo lectura** de `01_playback_activity.js`.
   Comprueba validadores e índices, que las consultas del backend (Mi lista, Continuar
   viendo, historial, sesiones abiertas, informes por periodo) usen su índice sin
@@ -122,5 +138,7 @@ se hace desde `/admin/login`. Para iniciar la aplicación,
 configura `MONGO_URI`, `ORACLE_JDBC_URL`, `ORACLE_USERNAME` y
 `ORACLE_PASSWORD` en el entorno de ejecución y usa `mvn spring-boot:run`.
 
-Queda pendiente alinear las referencias `profileId` y `subscriptionId` con
-las semillas Oracle reales.
+Las referencias del fixture Mongo coinciden con los IDs de
+`database/oracle/03_seed.sql`. Si cambias esos IDs, actualízalos en ambos lados
+antes de cargar actividad en MongoDB. La semilla Oracle no carga documentos
+MongoDB ni valida que el fixture se haya ejecutado en esa base.

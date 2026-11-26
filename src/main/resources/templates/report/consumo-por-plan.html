@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{catalog/fragments :: head('Consumo por plan')}"></head>
+<body class="catalog-ui">
+<header th:replace="~{catalog/fragments :: header(true)}"></header>
+<main class="catalog-main">
+  <nav class="catalog-actions" aria-label="Navegación administrativa">
+    <a th:href="@{/admin/reportes}">Informes y exportaciones</a>
+    <a th:href="@{/admin/contents}">Administrar catálogo</a>
+    <form method="post" th:action="@{/admin/logout}"><button type="submit">Cerrar sesión</button></form>
+  </nav>
+  <h1>Consumo por plan histórico</h1>
+  <p>Las sesiones se atribuyen al plan de la suscripción guardada en Oracle. El rango se aplica a la fecha de inicio de cada sesión y es inclusivo.</p>
+
+  <form class="catalog-filters" method="get" th:action="@{/admin/reportes/consumo-por-plan}">
+    <label for="desde">Desde
+      <input id="desde" name="desde" type="date" th:value="${desde}" required>
+    </label>
+    <label for="hasta">Hasta (incluida)
+      <input id="hasta" name="hasta" type="date" th:value="${hasta}" required>
+    </label>
+    <button class="catalog-primary" type="submit">Generar informe</button>
+  </form>
+
+  <p class="catalog-panel" role="alert" th:if="${error}" th:text="${error}"></p>
+
+  <section th:if="${informe != null}">
+    <div class="catalog-panel catalog-actions">
+      <p><strong>Sesiones:</strong> <span th:text="${informe.sesionesTotales}"></span></p>
+      <p><strong>Tiempo consumido:</strong> <span th:text="${informe.tiempoTotal}"></span> (hh:mm:ss)</p>
+      <a class="catalog-primary"
+         th:href="@{/admin/reportes/consumo-por-plan.csv(desde=${desde},hasta=${hasta})}">Descargar CSV</a>
+    </div>
+
+    <p class="catalog-panel" th:if="${#lists.isEmpty(informe.filas)}">No se encontraron sesiones en ese rango.</p>
+    <div class="catalog-table" th:unless="${#lists.isEmpty(informe.filas)}">
+      <table>
+        <caption th:text="|Consumo desde ${desde} hasta ${hasta}|"></caption>
+        <thead>
+          <tr>
+            <th scope="col">Plan histórico</th>
+            <th scope="col">Tipo de contenido</th>
+            <th scope="col">Sesiones</th>
+            <th scope="col">Tiempo consumido (hh:mm:ss)</th>
+            <th scope="col">Perfiles distintos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="fila : ${informe.filas}">
+            <td th:text="${fila.nombrePlan}"></td>
+            <td th:text="${fila.tipoContenido}"></td>
+            <td th:text="${fila.sesiones}"></td>
+            <td th:text="${fila.tiempoConsumido}"></td>
+            <td th:text="${fila.perfilesUnicos}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

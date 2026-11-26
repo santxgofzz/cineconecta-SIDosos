@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{catalog/fragments :: head('Ingresos y suscripciones por plan')}"></head>
+<body class="catalog-ui">
+  <header th:replace="~{catalog/fragments :: header(true)}"></header>
+  <main class="catalog-main">
+    <nav class="catalog-actions" aria-label="Navegación administrativa">
+      <a th:href="@{/admin/reportes}">Informes y exportaciones</a>
+      <a th:href="@{/admin/contents}">Administrar catálogo</a>
+      <form method="post" th:action="@{/admin/logout}"><button type="submit">Cerrar sesión</button></form>
+    </nav>
+    <h1>Ingresos y suscripciones por plan</h1>
+    <p>El informe suma los pagos recibidos y cuenta las suscripciones iniciadas entre las fechas seleccionadas.</p>
+
+    <form class="catalog-filters" method="get" th:action="@{/admin/reportes/ingresos-por-plan}">
+      <label for="desde">Desde
+        <input id="desde" name="desde" type="date" th:value="${desde}" required>
+      </label>
+      <label for="hasta">Hasta (incluida)
+        <input id="hasta" name="hasta" type="date" th:value="${hasta}" required>
+      </label>
+      <button class="catalog-primary" type="submit">Generar informe</button>
+    </form>
+
+    <p class="catalog-panel" role="alert" th:if="${error}" th:text="${error}"></p>
+
+    <section th:if="${resultados != null}">
+      <div class="catalog-panel catalog-actions">
+        <h2>Resultados</h2>
+        <a class="catalog-primary"
+           th:href="@{/admin/reportes/ingresos-por-plan.csv(desde=${desde},hasta=${hasta})}">Descargar CSV</a>
+      </div>
+      <p class="catalog-panel" th:if="${#lists.isEmpty(resultados)}">No hay planes registrados para el informe.</p>
+      <div class="catalog-table" th:unless="${#lists.isEmpty(resultados)}">
+        <table>
+          <caption th:text="|Ingresos y suscripciones desde ${desde} hasta ${hasta}|"></caption>
+          <thead>
+            <tr>
+              <th scope="col">Plan</th>
+              <th scope="col">Ingresos</th>
+              <th scope="col">Suscripciones iniciadas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="fila : ${resultados}">
+              <th scope="row" th:text="${fila.nombrePlan}"></th>
+              <td th:text="${fila.ingresos}"></td>
+              <td th:text="${fila.cantidadSuscripciones}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
