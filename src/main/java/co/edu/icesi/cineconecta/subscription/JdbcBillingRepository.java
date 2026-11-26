@@ -22,7 +22,7 @@ import java.util.Optional;
 public class JdbcBillingRepository implements BillingRepository {
     private static final String SQL_PLANS = "SELECT planId, name, price, maxProfiles FROM PLANS ORDER BY planId";
     private static final String SQL_PLAN = "SELECT planId, name, price, maxProfiles FROM PLANS WHERE planId = :planId";
-    private static final String SQL_LOCK_ACCOUNT = "SELECT accountId FROM ACCOUNTS WHERE accountId = :accountId FOR UPDATE WAIT 5";
+    private static final String SQL_LOCK_ACCOUNT = "SELECT accountId FROM ACCOUNTS WHERE accountId = :accountId FOR UPDATE WAIT 20";
     private static final String SQL_ACTIVE_PROFILES = """
             SELECT COUNT(*) FROM PROFILES
              WHERE ACCOUNTS_accountId = :accountId

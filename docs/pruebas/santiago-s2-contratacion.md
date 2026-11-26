@@ -33,7 +33,7 @@ el endpoint POST necesita una sesion cliente autenticada y un token CSRF valido.
 ## 3. operaciones de la transaccion
 
 1. se rechaza inmediatamente un pago simulado no aprobado.
-2. se bloquea la fila de `ACCOUNTS` con `SELECT ... FOR UPDATE WAIT 5` durante la transaccion.
+2. se bloquea la fila de `ACCOUNTS` con `SELECT ... FOR UPDATE WAIT 20` durante la transaccion.
 3. se consulta el plan, evitando aceptar precio enviado por el cliente.
 4. se revisa si existe cualquier suscripcion superpuesta con el periodo nuevo `[inicio, fin)`.
 5. se compara el numero de perfiles activos con `PLANS.maxProfiles`.
@@ -89,3 +89,5 @@ SELECT s.subscriptionId, s.ACCOUNTS_accountId, s.startsAt, s.endsAt,
 - no se cambian `pom.xml`, `application.yml`, configuraciones de seguridad, catalogo ni reproduccion.
 - `@Transactional` usa el gestor relacional por defecto de spring boot. si el equipo crea otro transaction manager para mongo, hay que calificar expresamente el de oracle para no mezclar transacciones.
 - el estado `approvePayment` es una simulacion academica; no es una integracion de cobro real y no debe exponerse como pago real en produccion.
+
+> actualizacion s3: el tiempo de espera del bloqueo de cuenta paso a 20 segundos. las pruebas de concurrencia y rollback estan en `docs/pruebas/santiago-s3-concurrencia-rollback.md`.
