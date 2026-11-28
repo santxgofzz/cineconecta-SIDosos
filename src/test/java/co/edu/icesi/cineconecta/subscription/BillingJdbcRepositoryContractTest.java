@@ -139,6 +139,18 @@ class BillingJdbcRepositoryContractTest {
     }
 
     @Test
+    void cuentaPerfilesActivosIncluyendoEstadoActivoA() {
+        when(jdbc.queryForObject(anyString(), eq(Map.of("accountId", 17L)), eq(Integer.class)))
+                .thenReturn(2);
+
+        assertEquals(2, repositorio.countActiveProfiles(17L));
+
+        ArgumentCaptor<String> sql = ArgumentCaptor.forClass(String.class);
+        verify(jdbc).queryForObject(sql.capture(), eq(Map.of("accountId", 17L)), eq(Integer.class));
+        assertTrue(sql.getValue().contains("'A'"));
+    }
+
+    @Test
     void convierteFechasAlTimestampUtcSinUsarHoraLocalDelComputador() {
         Instant instante = Instant.parse("2026-11-25T15:08:02.123Z");
         Timestamp convertido = JdbcBillingRepository.asUtcTimestamp(instante);

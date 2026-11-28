@@ -26,7 +26,7 @@ public class JdbcBillingRepository implements BillingRepository {
     private static final String SQL_ACTIVE_PROFILES = """
             SELECT COUNT(*) FROM PROFILES
              WHERE ACCOUNTS_accountId = :accountId
-               AND UPPER(TRIM(isActive)) IN ('1', 'Y', 'S', 'T')
+               AND UPPER(TRIM(isActive)) IN ('A', '1', 'Y', 'S', 'T')
             """;
     private static final String SQL_OVERLAP = """
             SELECT COUNT(*) FROM SUBSCRIPTIONS
