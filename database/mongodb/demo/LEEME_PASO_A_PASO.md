@@ -49,11 +49,11 @@ Esta opción crea y llena documentos. **No instala los validadores ni los índic
 3. Elige tu conexión y la base `cineconecta_modelo_demo`, con nombre `CineConecta - Modelo documental`.
 4. Selecciona las cinco colecciones. Usa muestreo `All documents` (son pocos registros) y la inferencia automática si aparece.
 5. Clic `Generate`. Revisa `contents.seasons[].episodes[]` y que todas las colecciones tengan los tipos apropiados.
-6. Ajusta **manualmente** las relaciones:
-   - `my_list.contentId` → `contents._id` (muchos a uno).
-   - `viewing_sessions.contentId` → `contents._id` (muchos a uno).
-   - `viewing_progress.contentId` → `contents._id` (muchos a uno).
-   - Opcional: `viewing_progress.lastSessionId` → `viewing_sessions._id` (referencia a la última sesión, que puede cambiar con el tiempo).
+6. Ajusta **manualmente** las relaciones en el diagrama:
+   - `contents._id` (1) → `my_list.contentId` (muchos, `1:N`). El índice único compuesto `{profileId: 1, contentId: 1}` sigue garantizando que un mismo perfil no repita un título, mientras varios perfiles pueden guardar el mismo contenido.
+   - `contents._id` (1) → `viewing_sessions.contentId` (muchos, `1:N`).
+   - `contents._id` (1) → `viewing_progress.contentId` (muchos, `1:N`).
+   - `viewing_sessions._id` (1) → `viewing_progress.lastSessionId` (0..1 / referencia a la última sesión que generó el progreso).
 7. Las referencias `profileId` y `subscriptionId` apuntan a **Oracle, que no aparece en ese diagrama MongoDB**. Pon una nota lateral explicativa; NO inventes colecciones MongoDB para perfiles o suscripciones.
 8. Exporta a PNG para el Word y a `.mdm` para compartir el diagrama editable.
 
@@ -67,7 +67,7 @@ Los `profileId` 15, 16 y 21 y `subscriptionId` 8, 9 y 10 son referencias sinteti
 
 ## Notas adicionales
 
-- Los campos `durationSeconds`, `watchedSeconds` y `lastPositionSeconds` se guardan en segundos.
+- Los campos `durationSeconds` (en `contents` / episodios), `watchedSeconds` y `lastPositionSeconds` se guardan en segundos. `viewing_progress` no duplica `durationSeconds`; la aplicación lee la duración oficial desde `contents`.
 - `contents.status` vale `draft`, `published` o `retired`.
 - Series: temporadas y episodios **embebidos** en el documento de `contents`.
 - `viewing_sessions`: historial de sesiones, no se sobrescribe.

@@ -38,18 +38,12 @@ BEGIN
             '$2a$10$N6x1FpG9O.z.1m2WdNsOHuvafSqXwrWftEnp2u9xulEVTyNECduRK',
             TIMESTAMP '2026-10-15 10:00:00');
 
-    INSERT INTO PROFILES (
-        profileId, name, maxAgeRating, isActive, ACCOUNTS_accountId,
-        DM_AGE_RATINGS_ageValue, DM_PROFILE_STATES_stateCode
-    ) VALUES (15, 'Principal', 18, 'A', 1, 18, 'A');
-    INSERT INTO PROFILES (
-        profileId, name, maxAgeRating, isActive, ACCOUNTS_accountId,
-        DM_AGE_RATINGS_ageValue, DM_PROFILE_STATES_stateCode
-    ) VALUES (16, 'Ninos', 7, 'A', 1, 7, 'A');
-    INSERT INTO PROFILES (
-        profileId, name, maxAgeRating, isActive, ACCOUNTS_accountId,
-        DM_AGE_RATINGS_ageValue, DM_PROFILE_STATES_stateCode
-    ) VALUES (21, 'Principal', 15, 'A', 2, 15, 'A');
+    INSERT INTO PROFILES (profileId, name, maxAgeRating, isActive, ACCOUNTS_accountId)
+    VALUES (15, 'Principal', 18, 'A', 1);
+    INSERT INTO PROFILES (profileId, name, maxAgeRating, isActive, ACCOUNTS_accountId)
+    VALUES (16, 'Ninos', 7, 'A', 1);
+    INSERT INTO PROFILES (profileId, name, maxAgeRating, isActive, ACCOUNTS_accountId)
+    VALUES (21, 'Principal', 15, 'A', 2);
 
     -- Cuenta familiar: continuidad exacta entre periodos [inicio, fin).
     INSERT INTO SUBSCRIPTIONS (

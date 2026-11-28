@@ -78,7 +78,7 @@ class CatalogRetirementMongoTest {
             session.setWatchedSeconds(30);
             session.close(NOW, "paused");
             mongo.insert(session);
-            mongo.insert(ViewingProgressDocument.of(41L, id, episode, episode, 30, 120, false, NOW, sessionId));
+            mongo.insert(ViewingProgressDocument.of(41L, id, episode, episode, 30, false, NOW, sessionId));
 
             var before = snapshots(mongo, id);
             assertThat(before).allSatisfy(rows -> assertThat(rows).hasSize(1));

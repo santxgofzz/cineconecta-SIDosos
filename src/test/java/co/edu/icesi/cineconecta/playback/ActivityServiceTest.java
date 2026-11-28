@@ -46,25 +46,26 @@ class ActivityServiceTest {
                 "CNT-001", movie(), "CNT-002", series(), "CNT-008", retiredMovie(), "CNT-018", adultMovie()));
     }
 
-    private static ViewingProgressDocument pending(String contentId, String episodeId, int pos, int dur, Instant at) {
+    private static ViewingProgressDocument pending(String contentId, String episodeId, int pos, Instant at) {
         return ViewingProgressDocument.of(PROFILE, contentId, episodeId, episodeId == null ? contentId : episodeId,
-                pos, dur, false, at, "SES-" + contentId);
+                pos, false, at, "SES-" + contentId);
     }
 
     @Test
     @DisplayName("Continuar viendo: orden por actividad reciente, sin retirados ni fuera de clasificación")
     void continueWatchingFiltersRetiredAndKeepsOrder() {
         when(progress.findByProfileIdAndCompletedFalseOrderByLastActivityAtDesc(eq(PROFILE), any())).thenReturn(List.of(
-                pending("CNT-002", "EP-002-02", 600, 2520, T.plusSeconds(300)),
-                pending("CNT-008", null, 100, 3000, T.plusSeconds(200)),
-                pending("CNT-001", null, 250, 1000, T.plusSeconds(100)),
-                pending("CNT-018", null, 10, 6000, T)));
+                pending("CNT-002", "EP-002-02", 600, T.plusSeconds(300)),
+                pending("CNT-008", null, 100, T.plusSeconds(200)),
+                pending("CNT-001", null, 250, T.plusSeconds(100)),
+                pending("CNT-018", null, 10, T)));
 
         var items = activity.continueWatching(ACCOUNT, PROFILE, 10);
 
         assertEquals(List.of("CNT-002", "CNT-001"), items.stream().map(ActivityService.ContinueItem::contentId).toList());
         assertEquals("El viaje", items.get(0).unitTitle());
         assertEquals(600, items.get(0).positionSeconds());
+        assertEquals(2520, items.get(0).durationSeconds());
         assertEquals(25, items.get(1).percent());
     }
 
@@ -78,8 +79,18 @@ class ActivityServiceTest {
     @Test
     void continueWatchingRespectsLimit() {
         when(progress.findByProfileIdAndCompletedFalseOrderByLastActivityAtDesc(eq(PROFILE), any())).thenReturn(List.of(
-                pending("CNT-001", null, 1, 1000, T), pending("CNT-002", "EP-002-01", 1, 2400, T)));
+                pending("CNT-001", null, 1, T), pending("CNT-002", "EP-002-01", 1, T)));
         assertEquals(1, activity.continueWatching(ACCOUNT, PROFILE, 1).size());
+    }
+
+    @Test
+    void continueWatchingClampsPositionWhenCatalogDurationShrinks() {
+        when(progress.findByProfileIdAndCompletedFalseOrderByLastActivityAtDesc(eq(PROFILE), any())).thenReturn(List.of(
+                pending("CNT-001", null, 1500, T)));
+        var items = activity.continueWatching(ACCOUNT, PROFILE, 5);
+        assertEquals(1000, items.get(0).durationSeconds());
+        assertEquals(1000, items.get(0).positionSeconds());
+        assertEquals(100, items.get(0).percent());
     }
 
     @Test

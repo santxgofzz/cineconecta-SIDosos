@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 /**
  * Progreso actual por (perfil, unidad) — RF-19, RF-20.
  * <ul>
- *   <li>Se deriva de la sesión: guarda la última posición, la duración, la
- *       actividad más reciente y la sesión que lo produjo.</li>
+ *   <li>Se deriva de la sesión: guarda la última posición, la actividad más
+ *       reciente y la sesión que lo produjo (la duración oficial permanece en {@code contents}).</li>
  *   <li>Completado al finalizar manualmente o con posición &gt;= 90 % de la duración.</li>
  *   <li>Una sesión nueva sobre una unidad completada empieza en 0 y restablece el
  *       progreso; las sesiones históricas no se tocan.</li>
@@ -43,7 +43,7 @@ public class ProgressService {
 
     public void record(ViewingSessionDocument s) {
         ViewingProgressDocument progress = ViewingProgressDocument.of(s.getProfileId(), s.getContentId(),
-                s.getEpisodeId(), s.getUnitKey(), s.getLastPositionSeconds(), s.getDurationSecondsSnapshot(),
+                s.getEpisodeId(), s.getUnitKey(), s.getLastPositionSeconds(),
                 s.isCompletedSnapshot(), s.getLastEventAt(), s.getId());
         try {
             retry.run(() -> repository.upsert(progress));

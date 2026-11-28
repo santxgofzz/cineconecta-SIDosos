@@ -75,12 +75,23 @@ public class ActivityService {
                     CatalogEntry c = contents.get(p.getContentId());
                     String unitTitle = p.getEpisodeId() == null ? c.title()
                             : c.findEpisode(p.getEpisodeId()).map(CatalogEntry.Episode::title).orElse(p.getEpisodeId());
-                    int pct = p.getDurationSeconds() == 0 ? 0
-                            : (int) Math.min(100, 100L * p.getLastPositionSeconds() / p.getDurationSeconds());
+                    int durationSeconds = unitDuration(c, p.getEpisodeId());
+                    int positionSeconds = durationSeconds > 0
+                            ? Math.min(p.getLastPositionSeconds(), durationSeconds)
+                            : p.getLastPositionSeconds();
+                    int pct = durationSeconds == 0 ? 0
+                            : (int) Math.min(100, 100L * positionSeconds / durationSeconds);
                     return new ContinueItem(p.getContentId(), p.getEpisodeId(), p.getUnitKey(), c.title(), unitTitle,
-                            c.type(), p.getLastPositionSeconds(), p.getDurationSeconds(), pct, p.getLastActivityAt());
+                            c.type(), positionSeconds, durationSeconds, pct, p.getLastActivityAt());
                 })
                 .toList();
+    }
+
+    private static int unitDuration(CatalogEntry content, String episodeId) {
+        Integer duration = episodeId == null
+                ? content.durationSeconds()
+                : content.findEpisode(episodeId).map(CatalogEntry.Episode::durationSeconds).orElse(null);
+        return duration == null ? 0 : Math.max(0, duration);
     }
 
     /** Historial completo, incluso de contenidos retirados (marcados como no disponibles). */

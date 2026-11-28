@@ -42,7 +42,6 @@
         contentId: "CNT-" + String(1 + (u % 50)).padStart(3, "0"),
         unitKey: "U-" + u,
         lastPositionSeconds: NumberInt(600),
-        durationSeconds: NumberInt(3600),
         completed: u % 3 === 0,
         lastActivityAt: new Date(inicio + Math.floor(Math.random() * 330 * dia)),
         lastSessionId: "S-" + p + "-" + u

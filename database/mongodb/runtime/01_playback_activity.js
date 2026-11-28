@@ -52,7 +52,7 @@
     viewing_progress: {
       bsonType: "object",
       required: ["_id", "profileId", "contentId", "unitKey", "lastPositionSeconds",
-                 "durationSeconds", "completed", "lastActivityAt", "lastSessionId"],
+                 "completed", "lastActivityAt", "lastSessionId"],
       properties: {
         _id: { bsonType: "objectId" },
         profileId: { bsonType: "long" },
@@ -60,7 +60,6 @@
         episodeId: { bsonType: "string", minLength: 1 },
         unitKey: { bsonType: "string", minLength: 1 },
         lastPositionSeconds: { bsonType: "int", minimum: 0 },
-        durationSeconds: { bsonType: "int", minimum: 1 },
         completed: { bsonType: "bool" },
         lastActivityAt: { bsonType: "date" },
         lastSessionId: { bsonType: "string", minLength: 1 }

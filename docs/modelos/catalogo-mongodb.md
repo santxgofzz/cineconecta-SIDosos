@@ -17,14 +17,17 @@ planificar una migración que conserve los identificadores.
 
 | Campo de referencia | Origen | Uso |
 | --- | --- | --- |
-| `contentId` | `contents._id`, string | Vincula Mi lista, sesiones y progreso a un título. |
+| `contentId` | `contents._id`, string | Vincula Mi lista (`1:N` desde `contents`), sesiones y progreso a un título. |
 | `episodeId` | `contents.seasons[].episodes[].id`, string | Vincula sesión y progreso a un episodio. Para películas y documentales la unidad es el propio título. |
 | `profileId` | `PROFILES.PROFILE_ID` en Oracle, BSON long en MongoDB | Identifica el titular de la actividad a través de su perfil. La aplicación verifica pertenencia y actividad usando Oracle. |
 | `subscriptionId` | `SUBSCRIPTIONS.SUBSCRIPTION_ID` en Oracle, BSON long en MongoDB | Registra la suscripción al inicio de la sesión para atribuir el plan histórico. |
-| `lastSessionId` | `viewing_sessions._id`, string | Relaciona un progreso con la sesión de la que procede. |
+| `lastSessionId` | `viewing_sessions._id`, string | Relaciona `viewing_progress` con la sesión de `viewing_sessions` que produjo el avance más reciente. |
 
 Son referencias lógicas. Cada motor confirma sus operaciones de forma
 independiente y las comprobaciones entre motores se hacen en la aplicación.
+La duración oficial (`durationSeconds`) reside únicamente en `contents` (en la
+raíz para películas/documentales y por episodio en series) y no se duplica en
+`viewing_progress`; "Continuar viendo" la lee directamente desde `contents`.
 La actividad registra el tipo de contenido al iniciar una sesión para el
 informe histórico. Ese valor describe el momento de inicio y permanece
 estable aunque cambie el catálogo. La edad máxima y la vigencia se consultan

@@ -20,7 +20,7 @@ public record ProfileResponse(
                 entity.getMaxAgeRating(),
                 ageRatingLabel,
                 entity.isActiveState(),
-                entity.getStateCode()
+                entity.getIsActive()
         );
     }
 }

@@ -32,8 +32,9 @@ solo de demostracion; no son credenciales para la aplicacion ni para Oracle.
 
 **Reglas críticas:** 30 días, inicio inclusivo/fin exclusivo, pago+suscripción
 atómicos, bloqueo de la cuenta en contratación concurrente, capacidad de perfiles,
-ningún período superpuesto. Las tablas DM_AGE_RATINGS y DM_PROFILE_STATES del
-modelo de equipo deben documentarse y evitar campos que contradigan sus catálogos.
+ningún período superpuesto. Las columnas `maxAgeRating` e `isActive` de
+`PROFILES` son directamente las claves foráneas hacia `DM_AGE_RATINGS` y
+`DM_PROFILE_STATES`, evitando columnas duplicadas en el esquema.
 
 Si cambias esos IDs, actualiza las referencias en el fixture Mongo. La demo Mongo
 continua siendo una base aislada y no se transforma por ejecutar la semilla Oracle.

@@ -23,7 +23,6 @@ public class ViewingProgressDocument {
     private String episodeId;
     private String unitKey;
     private Integer lastPositionSeconds;
-    private Integer durationSeconds;
     private Boolean completed;
     private Instant lastActivityAt;
     private String lastSessionId;
@@ -31,7 +30,7 @@ public class ViewingProgressDocument {
     protected ViewingProgressDocument() {}
 
     public static ViewingProgressDocument of(Long profileId, String contentId, String episodeId, String unitKey,
-                                             int position, int duration, boolean completed,
+                                             int position, boolean completed,
                                              Instant lastActivityAt, String lastSessionId) {
         ViewingProgressDocument d = new ViewingProgressDocument();
         d.profileId = profileId;
@@ -39,7 +38,6 @@ public class ViewingProgressDocument {
         d.episodeId = episodeId;
         d.unitKey = unitKey;
         d.lastPositionSeconds = position;
-        d.durationSeconds = duration;
         d.completed = completed;
         d.lastActivityAt = lastActivityAt;
         d.lastSessionId = lastSessionId;
@@ -52,7 +50,6 @@ public class ViewingProgressDocument {
     public String getEpisodeId() { return episodeId; }
     public String getUnitKey() { return unitKey; }
     public int getLastPositionSeconds() { return lastPositionSeconds == null ? 0 : lastPositionSeconds; }
-    public int getDurationSeconds() { return durationSeconds == null ? 0 : durationSeconds; }
     public boolean isCompleted() { return Boolean.TRUE.equals(completed); }
     public Instant getLastActivityAt() { return lastActivityAt; }
     public String getLastSessionId() { return lastSessionId; }
