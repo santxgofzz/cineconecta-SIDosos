@@ -747,9 +747,6 @@
       "lastPositionSeconds": {
         "$numberInt": "1200"
       },
-      "durationSeconds": {
-        "$numberInt": "2400"
-      },
       "completed": false,
       "lastActivityAt": {
         "$date": "2026-11-02T15:20:00.000Z"
@@ -769,9 +766,6 @@
       "lastPositionSeconds": {
         "$numberInt": "5000"
       },
-      "durationSeconds": {
-        "$numberInt": "5820"
-      },
       "completed": false,
       "lastActivityAt": {
         "$date": "2026-11-09T19:25:00.000Z"
@@ -789,9 +783,6 @@
       "unitKey": "CNT-003",
       "lastPositionSeconds": {
         "$numberInt": "3000"
-      },
-      "durationSeconds": {
-        "$numberInt": "3300"
       },
       "completed": true,
       "lastActivityAt": {
@@ -811,9 +802,6 @@
       "lastPositionSeconds": {
         "$numberInt": "1200"
       },
-      "durationSeconds": {
-        "$numberInt": "5400"
-      },
       "completed": false,
       "lastActivityAt": {
         "$date": "2026-11-04T17:25:00.000Z"
@@ -832,9 +820,6 @@
       "lastPositionSeconds": {
         "$numberInt": "6500"
       },
-      "durationSeconds": {
-        "$numberInt": "7200"
-      },
       "completed": true,
       "lastActivityAt": {
         "$date": "2026-11-05T21:00:00.000Z"
@@ -852,9 +837,6 @@
       "unitKey": "EP-002-02",
       "lastPositionSeconds": {
         "$numberInt": "2450"
-      },
-      "durationSeconds": {
-        "$numberInt": "2520"
       },
       "completed": true,
       "lastActivityAt": {
@@ -875,9 +857,6 @@
       "lastPositionSeconds": {
         "$numberInt": "1000"
       },
-      "durationSeconds": {
-        "$numberInt": "2280"
-      },
       "completed": false,
       "lastActivityAt": {
         "$date": "2026-11-10T14:20:00.000Z"
@@ -897,9 +876,6 @@
       "lastPositionSeconds": {
         "$numberInt": "600"
       },
-      "durationSeconds": {
-        "$numberInt": "3600"
-      },
       "completed": false,
       "lastActivityAt": {
         "$date": "2026-11-11T10:15:00.000Z"
@@ -917,9 +893,6 @@
       "unitKey": "EP-008-01",
       "lastPositionSeconds": {
         "$numberInt": "1000"
-      },
-      "durationSeconds": {
-        "$numberInt": "2640"
       },
       "completed": false,
       "lastActivityAt": {

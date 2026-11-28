@@ -33,7 +33,6 @@ class ViewingProgressStoreImpl implements ViewingProgressStore {
                 .set("unitKey", p.getUnitKey())
                 .set("contentId", p.getContentId())
                 .set("lastPositionSeconds", p.getLastPositionSeconds())
-                .set("durationSeconds", p.getDurationSeconds())
                 .set("completed", p.isCompleted())
                 .set("lastActivityAt", p.getLastActivityAt())
                 .set("lastSessionId", p.getLastSessionId());

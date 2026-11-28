@@ -11,15 +11,9 @@ CREATE UNIQUE INDEX ACCOUNTS_EMAIL_LOWER_UK ON ACCOUNTS (LOWER(email));
 -- Unicidad de nombre de perfil dentro de cada cuenta (insensible a mayúsculas).
 CREATE UNIQUE INDEX PROFILES_ACC_NAME_UK ON PROFILES (ACCOUNTS_accountId, LOWER(name));
 
--- Reglas de dominio para evitar contradicciones entre columnas redundantes del MR y los catálogos.
+-- Regla de dominio para el estado del perfil (alineada con DM_PROFILE_STATES).
 ALTER TABLE PROFILES
     ADD CONSTRAINT PROFILES_IS_ACTIVE_CK CHECK (isActive IN ('A', 'I'));
-
-ALTER TABLE PROFILES
-    ADD CONSTRAINT PROFILES_STATE_SYNC_CK CHECK (isActive = DM_PROFILE_STATES_stateCode);
-
-ALTER TABLE PROFILES
-    ADD CONSTRAINT PROFILES_AGE_SYNC_CK CHECK (maxAgeRating = DM_AGE_RATINGS_ageValue);
 
 -- Reglas de integridad para planes, suscripciones y pagos.
 ALTER TABLE PLANS

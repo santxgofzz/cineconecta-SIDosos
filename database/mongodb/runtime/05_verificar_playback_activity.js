@@ -98,11 +98,47 @@
     else aviso(descripcion + ": " + n);
   }
 
+  const conDuracionCatalogo = [
+    { $lookup: { from: "contents", localField: "contentId", foreignField: "_id", as: "c" } },
+    { $unwind: "$c" },
+    { $addFields: {
+      duracionCatalogo: {
+        $cond: [
+          { $eq: ["$c.type", "series"] },
+          {
+            $first: {
+              $map: {
+                input: {
+                  $filter: {
+                    input: {
+                      $reduce: {
+                        input: { $ifNull: ["$c.seasons", []] },
+                        initialValue: [],
+                        in: { $concatArrays: ["$$value", { $ifNull: ["$$this.episodes", []] }] }
+                      }
+                    },
+                    as: "ep",
+                    cond: { $eq: ["$$ep.id", "$episodeId"] }
+                  }
+                },
+                as: "ep",
+                in: "$$ep.durationSeconds"
+              }
+            }
+          },
+          "$c.durationSeconds"
+        ]
+      }
+    } },
+    { $match: { duracionCatalogo: { $type: "number", $gt: 0 } } }
+  ];
+
   revisarDatos("Progreso pendiente con posición >= 90 % (debería estar completado)",
-    contar("viewing_progress", [{ $match: { completed: false,
-      $expr: { $gte: [{ $multiply: ["$lastPositionSeconds", 10] }, { $multiply: ["$durationSeconds", 9] }] } } }]));
-  revisarDatos("Progreso con posición mayor que la duración",
-    contar("viewing_progress", [{ $match: { $expr: { $gt: ["$lastPositionSeconds", "$durationSeconds"] } } }]));
+    contar("viewing_progress", conDuracionCatalogo.concat([{ $match: { completed: false,
+      $expr: { $gte: [{ $multiply: ["$lastPositionSeconds", 10] }, { $multiply: ["$duracionCatalogo", 9] }] } } }])));
+  revisarDatos("Progreso con posición mayor que la duración del catálogo",
+    contar("viewing_progress", conDuracionCatalogo.concat([{ $match: {
+      $expr: { $gt: ["$lastPositionSeconds", "$duracionCatalogo"] } } }])));
   revisarDatos("Progreso cuya lastSessionId no existe en viewing_sessions",
     contar("viewing_progress", [
       { $lookup: { from: "viewing_sessions", localField: "lastSessionId", foreignField: "_id", as: "s" } },

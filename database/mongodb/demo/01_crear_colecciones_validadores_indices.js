@@ -373,7 +373,6 @@
       "contentId",
       "unitKey",
       "lastPositionSeconds",
-      "durationSeconds",
       "completed",
       "lastActivityAt",
       "lastSessionId"
@@ -400,10 +399,6 @@
       "lastPositionSeconds": {
         "bsonType": "int",
         "minimum": 0
-      },
-      "durationSeconds": {
-        "bsonType": "int",
-        "minimum": 1
       },
       "completed": {
         "bsonType": "bool"

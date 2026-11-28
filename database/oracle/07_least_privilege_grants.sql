@@ -1,25 +1,30 @@
--- Privilegios mínimos para el usuario de aplicación Oracle (módulo cuentas y perfiles).
+-- Privilegios mínimos para el usuario de aplicación Oracle (cuentas, perfiles, facturación e informes).
 -- Ejecutar conectado como el dueño del esquema o DBA. Reemplazar CINECONECTA_APP
 -- y CINECONECTA_OWNER según corresponda en el entorno del equipo/curso.
 --
 -- Nota:
--- - La aplicación de cuentas y perfiles no ejecuta DDL (CREATE/ALTER/DROP) ni DELETE.
--- - Las bajas lógicas de perfiles se realizan actualizando isActive / DM_PROFILE_STATES_stateCode a 'I'.
+-- - La aplicación no ejecuta DDL (CREATE/ALTER/DROP) ni DELETE en producción.
+-- - Las bajas lógicas de perfiles se realizan actualizando isActive a 'I'.
 -- - El bloqueo pesimista (SELECT ... FOR UPDATE) sobre ACCOUNTS solo requiere SELECT/UPDATE.
 
 -- CREATE USER CINECONECTA_APP IDENTIFIED BY "<definir_clave_por_entorno>";
 GRANT CREATE SESSION TO CINECONECTA_APP;
 
--- Lectura de catálogos y suscripciones vigentes
+-- Lectura de catálogos, planes y reportes
 GRANT SELECT ON CINECONECTA_OWNER.DM_AGE_RATINGS TO CINECONECTA_APP;
 GRANT SELECT ON CINECONECTA_OWNER.DM_PROFILE_STATES TO CINECONECTA_APP;
 GRANT SELECT ON CINECONECTA_OWNER.PLANS TO CINECONECTA_APP;
-GRANT SELECT ON CINECONECTA_OWNER.SUBSCRIPTIONS TO CINECONECTA_APP;
 
 -- Operación de cuentas y perfiles (sin DELETE)
 GRANT SELECT, INSERT, UPDATE ON CINECONECTA_OWNER.ACCOUNTS TO CINECONECTA_APP;
 GRANT SELECT, INSERT, UPDATE ON CINECONECTA_OWNER.PROFILES TO CINECONECTA_APP;
 
--- Secuencias para alta de cuentas y perfiles
+-- Suscripciones y pagos (solo lectura e inserción transaccional, sin UPDATE ni DELETE)
+GRANT SELECT, INSERT ON CINECONECTA_OWNER.SUBSCRIPTIONS TO CINECONECTA_APP;
+GRANT SELECT, INSERT ON CINECONECTA_OWNER.PAYMENTS TO CINECONECTA_APP;
+
+-- Secuencias para alta de cuentas, perfiles, suscripciones y pagos
 GRANT SELECT ON CINECONECTA_OWNER.SEQ_ACCOUNTS TO CINECONECTA_APP;
 GRANT SELECT ON CINECONECTA_OWNER.SEQ_PROFILES TO CINECONECTA_APP;
+GRANT SELECT ON CINECONECTA_OWNER.CC_SUBSCRIPTIONS_SEQ TO CINECONECTA_APP;
+GRANT SELECT ON CINECONECTA_OWNER.CC_PAYMENTS_SEQ TO CINECONECTA_APP;

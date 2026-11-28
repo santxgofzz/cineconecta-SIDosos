@@ -7,18 +7,19 @@
 - Juan Felipe Zuñiga
 - Juan David Fajardo
 
-**Estado:** estructura inicial del repositorio, NO aplicación terminada.
-Stack propuesto: Java 21, Spring Boot 3.5.16, Spring MVC/Thymeleaf, Spring
-Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
+**Estado:** aplicación modular implementada con persistencia políglota (Oracle + MongoDB). Quedan pendientes las evidencias finales sobre Oracle real (`04_indexes.sql`, `05_benchmark.sql`, `BillingOracleIntegrationTest`), la actualización visual de `docs/modelos/diagrama-mongo.png` / `modelo-relacional.pdf` y completar `docs/ia/uso-de-ia.md`.
+Stack: Java 21, Spring Boot 3.5.16, Spring MVC/Thymeleaf, Spring Security,
+Spring Data JPA + JDBC (Oracle) y Spring Data MongoDB (más cliente React + Vite
+en `frontend/` para registro, login y gestión de perfiles).
 
 ## Qué tiene hoy?
 
-- `docs/`: enunciado, rúbrica, MR, modelo documental y diagrama Mongo.
-- `database/mongodb/demo/`: scripts **originales**, validadores, índices y JSON
-  enviados por el equipo; usan `cineconecta_modelo_demo` con IDs SQL de prueba.
-- `database/mongodb/runtime/`: tareas para crear BD real `cineconecta`.
-- `database/oracle/`: esquema (`01_schema.sql`), datos sinteticos (`03_seed.sql`) e informe SQL de ingresos y suscripciones por plan; faltan restricciones adicionales e índices.
-- `src/`: base mínima de Spring Boot y un ejemplo unitario de vigencia de suscripción.
+- `docs/`: enunciado, rúbrica, MR, modelo documental, diagrama Mongo, reflexión IA y evidencias (`docs/evidencias/` y `docs/pruebas/`).
+- `database/mongodb/demo/`: scripts demostrativos (`cineconecta_modelo_demo`), validadores, índices y JSON para generar el diagrama en MongoDB Compass.
+- `database/mongodb/runtime/`: scripts idempotentes para crear/verificar la BD real `cineconecta` (`01_playback_activity.js` .. `08_seed_movies_dataset.js`).
+- `database/oracle/`: esquema relacional (`01_schema.sql`), restricciones (`02_constraints.sql`), datos sintéticos (`03_seed.sql`), permisos mínimos (`07_least_privilege_grants.sql`), reglas de facturación (`subscriptions/`) e informe SQL (`06_report_ingresos_y_suscripciones_por_plan.sql`).
+- `src/`: módulos `account`, `profile`, `subscription`, `catalog`, `watchlist`, `playback`, `admin`, `report`, `integration` y su suite de pruebas en `src/test/`.
+- `frontend/`: interfaz React + Vite para inicio, login, registro y administración/selección de perfiles consumiendo la API de Spring Boot.
 
 ## Primeros pasos
 
@@ -28,9 +29,10 @@ Security, Spring Data JPA (Oracle) y Spring Data MongoDB.
 3. Configurar en el sistema/IDE las variables del archivo `.env.example`.
    **Spring no lee `.env` automáticamente:** hay que definir las variables en
    el entorno o en la configuración de ejecución del IDE.
-4. En SQL Developer, conecta al esquema de prueba y ejecuta con **Run Script
-   (F5)** `database/oracle/01_schema.sql`; después, ejecuta una sola vez
-   `database/oracle/03_seed.sql` en ese esquema.
+4. En SQL Developer, conecta al esquema dueño en Oracle y ejecuta con **Run Script (F5)**
+   `database/oracle/01_schema.sql`, `database/oracle/02_constraints.sql`,
+   `database/oracle/subscriptions/01_reglas_facturacion.sql` y una sola vez
+   `database/oracle/03_seed.sql` (opcional `07_least_privilege_grants.sql` para `CINECONECTA_APP`).
 5. Preparar MongoDB con los [scripts runtime](database/mongodb/runtime/README.md).
    Las referencias de actividad deben coincidir con Oracle antes de cargarlas.
    Mantén la demo en su base propia.
@@ -70,18 +72,14 @@ admin de demo no permite iniciar sesión. No cargarla en la base productiva.
 - `integration`: reglas que requieren consultar ambos motores.
 - `common`: errores, respuestas y validaciones compartidas.
 
-Los módulos están en construcción; el informe de ingresos por plan ya cuenta
-con controlador, servicio y repositorio Spring Boot.
+Los módulos implementan controladores REST/MVC, servicios transaccionales,
+repositorios Oracle/MongoDB y validaciones de autorización en el servidor.
 
 ## Flujo de trabajo Git
 
 - `main`: versión estable y demostrable.
 - `develop`: integración del equipo.
-- `feature/oracle-subscriptions`
-- `feature/mongo-catalog`
-- `feature/playback-integration`
-- `feature/auth-profiles-ui`
-- `feature/reports-performance`
+- Ramas `feature/*` / `fix/*`: trabajo por módulo y Pull Requests hacia `develop`.
 
 Cada miembro trabaja desde `develop`, hace commits de un cambio entendible,
 abre Pull Request, solicita revisión y evita merges directos a `main`.
@@ -94,13 +92,7 @@ obligatorios están en `docs/pruebas/plan.md`.
 
 ## Seguridad
 
-No incluir credenciales en Git. La cadena general de `SecurityConfig`
-mantiene pendiente la integración con la autenticación de titulares Oracle.
-`AdminSecurityConfig` usa el acceso MongoDB independiente, con BCrypt,
-roles y CSRF para las operaciones de administración.
-
-## Limitaciones de este ZIP
-
-Es un scaffold para iniciar el repositorio, no un sistema completo ni un modelo
-Oracle implementado. El POM y Java no se han compilado en este entorno: verificar
-`mvn test` en la máquina del equipo antes de integrar nuevas funcionalidades.
+No incluir credenciales en Git. `SecurityConfig` (`@Order(2)`) autentica a los
+titulares contra `ACCOUNTS` en Oracle (`AccountUserDetailsService` + BCrypt) y
+`AdminSecurityConfig` (`@Order(1)`) aísla el acceso administrativo en MongoDB
+(`/admin/**`, `/api/admin/**`) con su propio contexto de sesión, roles y CSRF.

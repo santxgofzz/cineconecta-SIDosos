@@ -36,22 +36,13 @@ public class ProfileEntity {
     @Column(name = "ACCOUNTS_ACCOUNTID", nullable = false)
     private Long accountId;
 
-    @Column(name = "DM_AGE_RATINGS_AGEVALUE", nullable = false)
-    private Integer ageRatingValue;
-
-    @JdbcTypeCode(SqlTypes.CHAR)
-    @Column(name = "DM_PROFILE_STATES_STATECODE", nullable = false, length = 1)
-    private String stateCode;
-
     protected ProfileEntity() {}
 
     public ProfileEntity(Long profileId, String name, Integer maxAgeRating, String isActive, Long accountId) {
         this.profileId = profileId;
         this.name = name;
         this.maxAgeRating = maxAgeRating;
-        this.ageRatingValue = maxAgeRating;
         this.isActive = isActive;
-        this.stateCode = isActive;
         this.accountId = accountId;
     }
 
@@ -79,14 +70,6 @@ public class ProfileEntity {
         return accountId;
     }
 
-    public Integer getAgeRatingValue() {
-        return ageRatingValue;
-    }
-
-    public String getStateCode() {
-        return stateCode;
-    }
-
     public boolean isActiveState() {
         return ACTIVE.equalsIgnoreCase(isActive);
     }
@@ -94,16 +77,13 @@ public class ProfileEntity {
     public void updateDetails(String name, Integer maxAgeRating) {
         this.name = name;
         this.maxAgeRating = maxAgeRating;
-        this.ageRatingValue = maxAgeRating;
     }
 
     public void markActive() {
         this.isActive = ACTIVE;
-        this.stateCode = ACTIVE;
     }
 
     public void markInactive() {
         this.isActive = INACTIVE;
-        this.stateCode = INACTIVE;
     }
 }
